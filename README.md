@@ -1,6 +1,6 @@
-# kaios-svelte-starter
+# kaite
 
-A simple starter template for building a KaiOS app using Svelte and TypeScript.
+A Twitter client for KaiOS.
 
 ### Development and testing
 
