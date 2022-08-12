@@ -12,6 +12,10 @@
   import Profile from './routes/Profile.svelte';
   import Redirect from './routes/Redirect.svelte';
   import Timeline from './routes/Timeline.svelte';
+  import UserLikes from './routes/UserLikes.svelte';
+  import UserMentions from './routes/UserMentions.svelte';
+  import UserProfile from './routes/UserProfile.svelte';
+  import UserTweets from './routes/UserTweets.svelte';
   import { Twitter } from './services/twitter';
   import { settings } from './stores/settings';
 
@@ -23,6 +27,10 @@
     '/oauth': Oauth,
     '/timeline/:tweetId?': Timeline,
     '/profile': Profile,
+    '/user/:userId': UserProfile,
+    '/user/:userId/tweets/:tweetId?': UserTweets,
+    '/user/:userId/mentions/:tweetId?': UserMentions,
+    '/user/:userId/likes/:tweetId?': UserLikes,
     '*': Redirect,
   };
 

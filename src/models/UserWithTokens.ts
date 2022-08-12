@@ -1,4 +1,6 @@
-export type User = {
+import type { Tokens } from '../services/twitter';
+
+export type UserWithTokens = Tokens & {
   id: string;
   name: string;
   username: string;

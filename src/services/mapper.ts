@@ -1,4 +1,4 @@
-import type { Tweet } from '../models';
+import type { Tweet, User } from '../models';
 import type { TwitterTweet, TwitterUser } from './twitter';
 
 export function toTweet(source: TwitterTweet, users: TwitterUser[]): Tweet {
@@ -33,4 +33,20 @@ export function toTweet(source: TwitterTweet, users: TwitterUser[]): Tweet {
   }
 
   return result;
+}
+
+export function toUser(source: TwitterUser): User {
+  return {
+    id: source.id,
+    name: source.name,
+    username: source.username,
+    avatarUrl: source.profile_image_url.replace('_normal.jpg', '_200x200.jpg'),
+    description: source.description,
+    location: source.location,
+    followersCount: source.public_metrics.followers_count,
+    followingCount: source.public_metrics.following_count,
+    tweetCount: source.public_metrics.tweet_count,
+    listedCount: source.public_metrics.listed_count,
+    createdAt: source.created_at,
+  };
 }

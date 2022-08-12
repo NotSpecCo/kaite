@@ -1,4 +1,4 @@
-import type { Tweet } from '../models';
+import type { Tweet, User } from '../models';
 import { Database } from './database';
 import { Twitter } from './twitter';
 
@@ -9,6 +9,28 @@ export class DataService {
   constructor() {
     this.twitter = new Twitter();
     this.database = new Database();
+  }
+
+  // Users
+
+  public async getUserById(id: string): Promise<User> {
+    const result = await this.twitter.getUserById(id);
+    return result;
+  }
+
+  public async getUserTweets(id: string): Promise<Tweet[]> {
+    const result = await this.twitter.getUserTweets(id);
+    return result;
+  }
+
+  public async getUserMentions(id: string): Promise<Tweet[]> {
+    const result = await this.twitter.getUserMentions(id);
+    return result;
+  }
+
+  public async getUserLikes(id: string): Promise<Tweet[]> {
+    const result = await this.twitter.getUserLikes(id);
+    return result;
   }
 
   // Tweets

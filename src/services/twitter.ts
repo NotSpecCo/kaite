@@ -1,6 +1,6 @@
 import KaiOS from 'kaios-lib';
-import type { Tweet, User } from '../models';
-import { toTweet } from './mapper';
+import type { Tweet, User, UserWithTokens } from '../models';
+import { toTweet, toUser } from './mapper';
 
 type Config = {
   baseUrl: string;
@@ -96,23 +96,13 @@ export class Twitter {
     };
   }
 
-  async setUser(tokens: Tokens): Promise<User> {
+  async setUser(tokens: Tokens): Promise<UserWithTokens> {
     new KaiOS.LocalStorage().setItem('twitter_user', { ...tokens, id: 0, name: '', username: '' });
 
     const user = await this.getCurrentUser();
-    const result: User = {
+    const result: UserWithTokens = {
       ...tokens,
-      id: user.id,
-      name: user.name,
-      username: user.username,
-      avatarUrl: user.profile_image_url?.replace('_normal.jpg', '_200x200.jpg'),
-      description: user.description,
-      location: user.location,
-      createdAt: user.created_at,
-      followersCount: user.public_metrics.followers_count,
-      followingCount: user.public_metrics.following_count,
-      tweetCount: user.public_metrics.tweet_count,
-      listedCount: user.public_metrics.listed_count,
+      ...user,
     };
 
     new KaiOS.LocalStorage().setItem('twitter_user', result);
@@ -120,8 +110,8 @@ export class Twitter {
     return result;
   }
 
-  async getUser(): Promise<User | null> {
-    let user = new KaiOS.LocalStorage().getItem<User>('twitter_user');
+  async getUser(): Promise<UserWithTokens | null> {
+    let user = new KaiOS.LocalStorage().getItem<UserWithTokens>('twitter_user');
     if (!user) return null;
 
     const now = new Date().toISOString();
@@ -270,12 +260,20 @@ export class Twitter {
     });
   }
 
-  async getCurrentUser(): Promise<TwitterUser> {
+  async getCurrentUser(): Promise<User> {
     const url = new URL(`${this.config.baseUrl}/2/users/me`);
     url.searchParams.append('user.fields', 'profile_image_url,description,location,public_metrics');
 
     const res = await this.httpGet<ApiResponse<TwitterUser>>(url.toString());
-    return res.data;
+    return toUser(res.data);
+  }
+
+  async getUserById(id: string): Promise<User> {
+    const url = new URL(`${this.config.baseUrl}/2/users/${id}`);
+    url.searchParams.append('user.fields', 'profile_image_url,description,location,public_metrics');
+
+    const res = await this.httpGet<ApiResponse<TwitterUser>>(url.toString());
+    return toUser(res.data);
   }
 
   async getFeed(sinceId?: string): Promise<Tweet[]> {
@@ -291,6 +289,87 @@ export class Twitter {
     );
     url.searchParams.append('media.fields', 'url,preview_image_url,media_key');
     url.searchParams.append('expansions', 'author_id,attachments.media_keys');
+
+    if (sinceId) {
+      url.searchParams.append('since_id', sinceId);
+    }
+
+    type Response = {
+      data?: TwitterTweet[];
+      includes: {
+        users: TwitterUser[];
+      };
+    };
+    const res = await this.httpGet<Response>(url.toString());
+
+    return res.data ? res.data.map((a) => toTweet(a, res.includes.users)) : [];
+  }
+
+  async getUserTweets(userId: string, sinceId?: string): Promise<Tweet[]> {
+    const url = new URL(`${this.config.baseUrl}/2/users/${userId}/tweets`);
+    url.searchParams.append('tweet.fields', 'attachments,created_at,entities,public_metrics');
+    url.searchParams.append('user.fields', 'id,profile_image_url,name,username');
+    url.searchParams.append(
+      'poll.fields',
+      'duration_minutes,end_datetime,id,options,voting_status'
+    );
+    url.searchParams.append('media.fields', 'url,preview_image_url,media_key');
+    url.searchParams.append('expansions', 'author_id,attachments.media_keys');
+    url.searchParams.append('max_results', '100');
+
+    if (sinceId) {
+      url.searchParams.append('since_id', sinceId);
+    }
+
+    type Response = {
+      data?: TwitterTweet[];
+      includes: {
+        users: TwitterUser[];
+      };
+    };
+    const res = await this.httpGet<Response>(url.toString());
+
+    return res.data ? res.data.map((a) => toTweet(a, res.includes.users)) : [];
+  }
+
+  async getUserMentions(userId: string, sinceId?: string): Promise<Tweet[]> {
+    const url = new URL(`${this.config.baseUrl}/2/users/${userId}/mentions`);
+    url.searchParams.append('tweet.fields', 'attachments,created_at,entities,public_metrics');
+    url.searchParams.append('user.fields', 'id,profile_image_url,name,username');
+    url.searchParams.append(
+      'poll.fields',
+      'duration_minutes,end_datetime,id,options,voting_status'
+    );
+    url.searchParams.append('media.fields', 'url,preview_image_url,media_key');
+    url.searchParams.append('expansions', 'author_id,attachments.media_keys');
+    url.searchParams.append('max_results', '100');
+
+    if (sinceId) {
+      url.searchParams.append('since_id', sinceId);
+    }
+
+    type Response = {
+      data?: TwitterTweet[];
+      includes: {
+        users: TwitterUser[];
+      };
+    };
+    const res = await this.httpGet<Response>(url.toString());
+
+    return res.data ? res.data.map((a) => toTweet(a, res.includes.users)) : [];
+  }
+
+  async getUserLikes(userId: string, sinceId?: string): Promise<Tweet[]> {
+    const url = new URL(`${this.config.baseUrl}/2/users/${userId}/liked_tweets`);
+    url.searchParams.append('tweet.fields', 'attachments,created_at,entities,public_metrics');
+    url.searchParams.append('user.fields', 'id,profile_image_url,name,username');
+    url.searchParams.append(
+      'poll.fields',
+      'duration_minutes,end_datetime,id,options,voting_status'
+    );
+    url.searchParams.append('media.fields', 'url,preview_image_url,media_key');
+    url.searchParams.append('expansions', 'author_id,attachments.media_keys');
+    url.searchParams.append('max_results', '100');
 
     if (sinceId) {
       url.searchParams.append('since_id', sinceId);
