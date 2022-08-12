@@ -1,5 +1,6 @@
 import KaiOS from 'kaios-lib';
-import type { User } from '../models';
+import type { Tweet, User } from '../models';
+import { toTweet } from './mapper';
 
 type Config = {
   baseUrl: string;
@@ -27,6 +28,35 @@ export type TwitterUser = {
     tweet_count: number;
     listed_count: number;
   };
+};
+
+export type TwitterTweet = {
+  attachments: {
+    media_keys: string[];
+  };
+  author_id: string;
+  created_at: string;
+  entities?: {
+    hashtags?: {
+      end: number;
+      start: number;
+      tag: string;
+    }[];
+    urls?: {
+      end: number;
+      start: number;
+      url: string;
+      display_url: string;
+    }[];
+  };
+  id: string;
+  public_metrics: {
+    like_count: number;
+    quote_count: number;
+    reply_count: number;
+    retweet_count: number;
+  };
+  text: string;
 };
 
 type ApiResponse<T> = {
@@ -175,10 +205,7 @@ export class Twitter {
     });
   }
 
-  private httpGet<T>(
-    path: string,
-    responseType: 'json' | 'text' | 'blob' = 'json'
-  ): Promise<ApiResponse<T>> {
+  private httpGet<T>(url: string, responseType: 'json' | 'text' | 'blob' = 'json'): Promise<T> {
     return new Promise(async (resolve, reject) => {
       const tokens = await this.getUser();
       if (!tokens) {
@@ -197,7 +224,7 @@ export class Twitter {
         if (xhr.status >= 400) {
           return reject({
             statusCode: xhr.status,
-            message: `Failed to GET ${path}`,
+            message: `Failed to GET ${url}`,
           });
         }
 
@@ -207,14 +234,14 @@ export class Twitter {
           resolve(xhr.response);
         }
       });
-      xhr.addEventListener('error', () => reject({ message: `Failed to GET ${path}` }));
-      xhr.open('GET', `${this.config.baseUrl}${path}`, true);
+      xhr.addEventListener('error', () => reject({ message: `Failed to GET ${url}` }));
+      xhr.open('GET', url, true);
       xhr.setRequestHeader('Authorization', `Bearer ${tokens.accessToken}`);
       xhr.send();
     });
   }
 
-  private httpPost<T>(path: string, body: any): Promise<ApiResponse<T>> {
+  private httpPost<T>(url: string, body: any): Promise<ApiResponse<T>> {
     return new Promise(async (resolve, reject) => {
       const tokens = await this.getUser();
       if (!tokens) {
@@ -230,23 +257,78 @@ export class Twitter {
         if (xhr.status >= 400) {
           return reject({
             statusCode: xhr.status,
-            message: `Failed to POST ${path}`,
+            message: `Failed to POST ${url}`,
           });
         }
 
         resolve(JSON.parse(xhr.response));
       });
-      xhr.addEventListener('error', () => reject({ message: `Failed to POST ${path}` }));
-      xhr.open('POST', `${this.config.baseUrl}${path}`, true);
+      xhr.addEventListener('error', () => reject({ message: `Failed to POST ${url}` }));
+      xhr.open('POST', url, true);
       xhr.setRequestHeader('Authorization', `Bearer ${tokens.accessToken}`);
       xhr.send(body);
     });
   }
 
   async getCurrentUser(): Promise<TwitterUser> {
-    const res = await this.httpGet<TwitterUser>(
-      '/2/users/me?user.fields=profile_image_url,description,location,public_metrics'
-    );
+    const url = new URL(`${this.config.baseUrl}/2/users/me`);
+    url.searchParams.append('user.fields', 'profile_image_url,description,location,public_metrics');
+
+    const res = await this.httpGet<ApiResponse<TwitterUser>>(url.toString());
     return res.data;
+  }
+
+  async getTimeline(sinceId?: string): Promise<Tweet[]> {
+    const url = new URL(`${this.config.baseUrl}/2/users/219060435/timelines/reverse_chronological`);
+    url.searchParams.append('tweet.fields', 'attachments,created_at,entities,public_metrics');
+    url.searchParams.append('user.fields', 'id,profile_image_url,name,username');
+    url.searchParams.append(
+      'poll.fields',
+      'duration_minutes,end_datetime,id,options,voting_status'
+    );
+    url.searchParams.append('media.fields', 'url,preview_image_url,media_key');
+    url.searchParams.append('expansions', 'author_id,attachments.media_keys');
+
+    if (sinceId) {
+      url.searchParams.append('since_id', sinceId);
+    }
+
+    type Response = {
+      data?: TwitterTweet[];
+      includes: {
+        users: TwitterUser[];
+      };
+    };
+    const res = await this.httpGet<Response>(url.toString());
+
+    return res.data ? res.data.map((a) => toTweet(a, res.includes.users)) : [];
+  }
+
+  async getTweet(id: string): Promise<Tweet | null> {
+    const url = new URL(`${this.config.baseUrl}/2/tweets/${id}`);
+    url.searchParams.append('tweet.fields', 'attachments,created_at,entities,public_metrics');
+    url.searchParams.append('user.fields', 'id,profile_image_url,name,username');
+    url.searchParams.append(
+      'poll.fields',
+      'duration_minutes,end_datetime,id,options,voting_status'
+    );
+    url.searchParams.append('media.fields', 'url,preview_image_url,media_key');
+    url.searchParams.append('expansions', 'author_id,attachments.media_keys');
+
+    type Response = {
+      data: TwitterTweet;
+      includes: {
+        users: TwitterUser[];
+      };
+      errors?: {
+        title: string;
+        detail: string;
+      }[];
+    };
+    const res = await this.httpGet<Response>(url.toString());
+
+    if (res.errors?.length > 0) return null;
+
+    return toTweet(res.data, res.includes.users);
   }
 }

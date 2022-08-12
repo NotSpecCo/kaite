@@ -21,7 +21,7 @@
     '/': Home,
     '/login': LogIn,
     '/oauth': Oauth,
-    '/timeline': Timeline,
+    '/timeline/:tweetId?': Timeline,
     '/profile': Profile,
     '*': Redirect,
   };
@@ -68,8 +68,7 @@
     }
 
     console.log('is logged in');
-
-    replace('/');
+    replace(`/timeline`);
   });
 
   $: Onyx.settings.update($settings);
