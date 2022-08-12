@@ -170,7 +170,6 @@ export class Twitter {
       });
       xhr.addEventListener('error', () => reject({ message: `Failed to refresh tokens` }));
       xhr.open('POST', `${this.config.baseUrl}/2/oauth2/token`, true);
-      xhr.setRequestHeader('Authorization', `Bearer ${tokens.accessToken}`);
       xhr.setRequestHeader('Content-Type', `application/x-www-form-urlencoded`);
       xhr.send(body);
     });
