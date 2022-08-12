@@ -31,6 +31,10 @@
     "typescript": "^4.0.0"
   },
   "dependencies": {
-    "sirv-cli": "^1.0.0"
+    "kaios-lib": "^1.6.0",
+    "onyx-ui": "^0.10.0",
+    "sirv-cli": "^1.0.0",
+    "svelte-icons": "^2.1.0",
+    "svelte-spa-router": "^3.3.0"
   }
 }

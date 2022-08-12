@@ -1,5 +1,5 @@
 {
-  "id": "com.garredow.kaite",
+  "id": "dev.nothing.kaite",
   "name": "Kaite",
   "description": "A Twitter client for KaiOS",
   "version": "0.1.0",
@@ -12,8 +12,22 @@
   "theme_color": "#FFFFFF",
   "developer": {
     "name": "Garrett Downs",
-    "url": "https://garrettdowns.com"
+    "url": "https://nothing.dev"
   },
   "type": "privileged",
-  "default_locale": "en"
+  "default_locale": "en",
+  "redirects": [
+    {
+      "from": "https://dev.nothing.kaite/oauth",
+      "to": "/index.html"
+    }
+  ],
+  "permissions": {
+    "audio-channel-content": {
+      "description": "Required to play audio in the background."
+    },
+    "systemXHR": {
+      "description": "Required to communicate with Twitter and other vital functions."
+    }
+  }
 }
