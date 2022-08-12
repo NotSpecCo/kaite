@@ -278,8 +278,11 @@ export class Twitter {
     return res.data;
   }
 
-  async getTimeline(sinceId?: string): Promise<Tweet[]> {
-    const url = new URL(`${this.config.baseUrl}/2/users/219060435/timelines/reverse_chronological`);
+  async getFeed(sinceId?: string): Promise<Tweet[]> {
+    const user = await this.getUser();
+    const url = new URL(
+      `${this.config.baseUrl}/2/users/${user.id}/timelines/reverse_chronological`
+    );
     url.searchParams.append('tweet.fields', 'attachments,created_at,entities,public_metrics');
     url.searchParams.append('user.fields', 'id,profile_image_url,name,username');
     url.searchParams.append(

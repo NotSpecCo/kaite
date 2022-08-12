@@ -14,7 +14,7 @@ export class DataService {
   // Tweets
   public async refreshTweets(): Promise<Tweet[]> {
     const latestTweet = await this.database.getLatestTweet();
-    const tweets = await this.twitter.getTimeline(latestTweet?.id);
+    const tweets = await this.twitter.getFeed(latestTweet?.id);
     await this.database.addTweets(tweets);
 
     return tweets;
