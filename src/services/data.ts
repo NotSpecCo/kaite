@@ -34,6 +34,7 @@ export class DataService {
   }
 
   // Tweets
+
   public async refreshTweets(): Promise<Tweet[]> {
     const latestTweet = await this.database.getLatestTweet();
     const tweets = await this.twitter.getFeed(latestTweet?.id);
@@ -42,8 +43,12 @@ export class DataService {
     return tweets;
   }
 
-  public async getTweet(id: string): Promise<Tweet | null> {
-    let tweet = await this.database.getTweet(id);
+  public async getTweetById(id: string): Promise<Tweet | null> {
+    let tweet = await this.database.getTweetById(id);
+
+    if (!tweet) {
+      tweet = await this.twitter.getTweetById(id);
+    }
 
     return tweet;
   }

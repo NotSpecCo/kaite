@@ -17,7 +17,7 @@ export class Database extends Dexie {
   // Tweets
 
   public async addTweet(tweet: Tweet): Promise<void> {
-    const existing = await this.getTweet(tweet.id);
+    const existing = await this.getTweetById(tweet.id);
     if (existing) return;
 
     await this.tweets.add(tweet);
@@ -36,7 +36,7 @@ export class Database extends Dexie {
     }
   }
 
-  public async getTweet(id: string): Promise<Tweet | null> {
+  public async getTweetById(id: string): Promise<Tweet | null> {
     const tweet = await this.tweets.get({ id });
     if (!tweet) return null;
 
