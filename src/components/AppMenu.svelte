@@ -5,8 +5,11 @@
   import { Onyx } from 'onyx-ui/services';
   import { updateView } from 'onyx-ui/stores/view';
   import { getShortcutFromIndex } from 'onyx-ui/utils/getShortcutFromIndex';
+  import { onMount } from 'svelte';
   import FaListUl from 'svelte-icons/fa/FaListUl.svelte';
-  import { push } from 'svelte-spa-router';
+  import { location, push } from 'svelte-spa-router';
+  import type { User } from '../models';
+  import { Twitter } from '../services/twitter';
 
   type MenuItem = {
     id: string;
@@ -17,6 +20,9 @@
   const menuItems: MenuItem[] = [
     { id: 'timeline', text: 'Timeline', route: '/timeline', icon: FaListUl },
   ];
+
+  let user: User;
+  onMount(() => new Twitter().getUser().then((res) => (user = res)));
 </script>
 
 <NavGroup groupId="app-menu">
@@ -25,6 +31,24 @@
     <div class="app-name">Kaite</div>
   </div>
   <div class="scroller" data-nav-scroller>
+    <ListItem
+      imageUrl={user?.avatarUrl}
+      imageStyle="circle"
+      imageSize={IconSize.Small}
+      primaryText="My Profile"
+      navi={{
+        itemId: 'profile',
+        shortcutKey: getShortcutFromIndex(0),
+        onSelect: () => {
+          Onyx.appMenu.close();
+          if ($location === '/profile') {
+            updateView({ viewing: ViewState.Card });
+            return;
+          }
+          push('/profile');
+        },
+      }}
+    />
     {#each menuItems as item, i}
       <ListItem
         icon={item.icon}
@@ -32,10 +56,10 @@
         primaryText={item.text}
         navi={{
           itemId: item.id,
-          shortcutKey: getShortcutFromIndex(i),
+          shortcutKey: getShortcutFromIndex(i + 1),
           onSelect: () => {
             Onyx.appMenu.close();
-            if (location.hash.startsWith(`#${item.route}`)) {
+            if (window.location.hash.startsWith(`#${item.route}`)) {
               updateView({ viewing: ViewState.Card });
               return;
             }

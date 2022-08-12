@@ -9,6 +9,7 @@
   import Home from './routes/Home.svelte';
   import LogIn from './routes/LogIn.svelte';
   import Oauth from './routes/Oauth.svelte';
+  import Profile from './routes/Profile.svelte';
   import Redirect from './routes/Redirect.svelte';
   import Timeline from './routes/Timeline.svelte';
   import { Twitter } from './services/twitter';
@@ -21,6 +22,7 @@
     '/login': LogIn,
     '/oauth': Oauth,
     '/timeline': Timeline,
+    '/profile': Profile,
     '*': Redirect,
   };
 

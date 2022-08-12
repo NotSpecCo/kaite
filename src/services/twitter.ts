@@ -17,6 +17,16 @@ export type TwitterUser = {
   id: string;
   name: string;
   username: string;
+  profile_image_url: string;
+  description: string;
+  location: string;
+  created_at: string;
+  public_metrics: {
+    followers_count: number;
+    following_count: number;
+    tweet_count: number;
+    listed_count: number;
+  };
 };
 
 type ApiResponse<T> = {
@@ -60,9 +70,19 @@ export class Twitter {
     new KaiOS.LocalStorage().setItem('twitter_user', { ...tokens, id: 0, name: '', username: '' });
 
     const user = await this.getCurrentUser();
-    const result = {
+    const result: User = {
       ...tokens,
-      ...user,
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      avatarUrl: user.profile_image_url?.replace('_normal.jpg', '_200x200.jpg'),
+      description: user.description,
+      location: user.location,
+      createdAt: user.created_at,
+      followersCount: user.public_metrics.followers_count,
+      followingCount: user.public_metrics.following_count,
+      tweetCount: user.public_metrics.tweet_count,
+      listedCount: user.public_metrics.listed_count,
     };
 
     new KaiOS.LocalStorage().setItem('twitter_user', result);
@@ -100,7 +120,7 @@ export class Twitter {
         if (xhr.status >= 400) {
           return reject({
             statusCode: xhr.status,
-            message: `Failed to fetch tokens from code1`,
+            message: `Failed to fetch tokens from code`,
           });
         }
 
@@ -113,7 +133,7 @@ export class Twitter {
         resolve(result);
       });
       xhr.addEventListener('error', (err) =>
-        reject({ message: `Failed to fetch tokens from code2` })
+        reject({ message: `Failed to fetch tokens from code` })
       );
       xhr.open('POST', `${this.config.baseUrl}/2/oauth2/token`, true);
       xhr.setRequestHeader('Content-Type', `application/x-www-form-urlencoded`);
@@ -225,7 +245,9 @@ export class Twitter {
   }
 
   async getCurrentUser(): Promise<TwitterUser> {
-    const res = await this.httpGet<TwitterUser>('/2/users/me');
+    const res = await this.httpGet<TwitterUser>(
+      '/2/users/me?user.fields=profile_image_url,description,location,public_metrics'
+    );
     return res.data;
   }
 }

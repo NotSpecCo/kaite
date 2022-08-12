@@ -24,7 +24,10 @@
     url.searchParams.append('response_type', 'code');
     url.searchParams.append('client_id', config.clientId);
     url.searchParams.append('redirect_uri', config.redirectUri);
-    url.searchParams.append('scope', 'tweet.read offline.access users.read');
+    url.searchParams.append(
+      'scope',
+      'tweet.read offline.access users.read follows.read like.read list.read bookmark.read'
+    );
     url.searchParams.append('state', 'state');
     url.searchParams.append('code_challenge', 'challenge');
     url.searchParams.append('code_challenge_method', 'plain');
