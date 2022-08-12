@@ -41,7 +41,7 @@
   });
 
   async function getTweet(id: string) {
-    const res = await new DataService().getTweet(id);
+    const res = await new DataService().getTweetById(id);
     if (!res) throw new Error(`No tweet found for id ${id}`);
     return res;
   }

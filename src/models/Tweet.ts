@@ -7,6 +7,7 @@ export type Tweet = {
     avatarUrl: string;
   };
   text: string;
+  htmlText: string;
   likeCount: number;
   quoteCount: number;
   replyCount: number;
@@ -18,6 +19,12 @@ export type Tweet = {
     urls?: {
       url: string;
       display_url: string;
+      title: string;
+      description: string;
+    }[];
+    mentions?: {
+      id: string;
+      username: string;
     }[];
   };
   createdAt: string;

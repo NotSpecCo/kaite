@@ -47,6 +47,14 @@ export type TwitterTweet = {
       start: number;
       url: string;
       display_url: string;
+      title: string;
+      description: string;
+    }[];
+    mentions?: {
+      end: number;
+      start: number;
+      id: string;
+      username: string;
     }[];
   };
   id: string;
@@ -288,7 +296,10 @@ export class Twitter {
       'duration_minutes,end_datetime,id,options,voting_status'
     );
     url.searchParams.append('media.fields', 'url,preview_image_url,media_key');
-    url.searchParams.append('expansions', 'author_id,attachments.media_keys');
+    url.searchParams.append(
+      'expansions',
+      'author_id,attachments.media_keys,entities.mentions.username'
+    );
 
     if (sinceId) {
       url.searchParams.append('since_id', sinceId);
@@ -302,7 +313,16 @@ export class Twitter {
     };
     const res = await this.httpGet<Response>(url.toString());
 
-    return res.data ? res.data.map((a) => toTweet(a, res.includes.users)) : [];
+    return res.data
+      ? res.data.map((a) =>
+          toTweet(a, {
+            hashtags: a.entities?.hashtags ?? [],
+            urls: a.entities?.urls ?? [],
+            mentions: a.entities?.mentions ?? [],
+            users: res.includes.users ?? [],
+          })
+        )
+      : [];
   }
 
   async getUserTweets(userId: string, sinceId?: string): Promise<Tweet[]> {
@@ -314,7 +334,10 @@ export class Twitter {
       'duration_minutes,end_datetime,id,options,voting_status'
     );
     url.searchParams.append('media.fields', 'url,preview_image_url,media_key');
-    url.searchParams.append('expansions', 'author_id,attachments.media_keys');
+    url.searchParams.append(
+      'expansions',
+      'author_id,attachments.media_keys,entities.mentions.username'
+    );
     url.searchParams.append('max_results', '100');
 
     if (sinceId) {
@@ -329,7 +352,16 @@ export class Twitter {
     };
     const res = await this.httpGet<Response>(url.toString());
 
-    return res.data ? res.data.map((a) => toTweet(a, res.includes.users)) : [];
+    return res.data
+      ? res.data.map((a) =>
+          toTweet(a, {
+            hashtags: a.entities?.hashtags ?? [],
+            urls: a.entities?.urls ?? [],
+            mentions: a.entities?.mentions ?? [],
+            users: res.includes.users ?? [],
+          })
+        )
+      : [];
   }
 
   async getUserMentions(userId: string, sinceId?: string): Promise<Tweet[]> {
@@ -341,7 +373,10 @@ export class Twitter {
       'duration_minutes,end_datetime,id,options,voting_status'
     );
     url.searchParams.append('media.fields', 'url,preview_image_url,media_key');
-    url.searchParams.append('expansions', 'author_id,attachments.media_keys');
+    url.searchParams.append(
+      'expansions',
+      'author_id,attachments.media_keys,entities.mentions.username'
+    );
     url.searchParams.append('max_results', '100');
 
     if (sinceId) {
@@ -356,7 +391,16 @@ export class Twitter {
     };
     const res = await this.httpGet<Response>(url.toString());
 
-    return res.data ? res.data.map((a) => toTweet(a, res.includes.users)) : [];
+    return res.data
+      ? res.data.map((a) =>
+          toTweet(a, {
+            hashtags: a.entities?.hashtags ?? [],
+            urls: a.entities?.urls ?? [],
+            mentions: a.entities?.mentions ?? [],
+            users: res.includes.users ?? [],
+          })
+        )
+      : [];
   }
 
   async getUserLikes(userId: string, sinceId?: string): Promise<Tweet[]> {
@@ -368,7 +412,10 @@ export class Twitter {
       'duration_minutes,end_datetime,id,options,voting_status'
     );
     url.searchParams.append('media.fields', 'url,preview_image_url,media_key');
-    url.searchParams.append('expansions', 'author_id,attachments.media_keys');
+    url.searchParams.append(
+      'expansions',
+      'author_id,attachments.media_keys,entities.mentions.username'
+    );
     url.searchParams.append('max_results', '100');
 
     if (sinceId) {
@@ -383,10 +430,19 @@ export class Twitter {
     };
     const res = await this.httpGet<Response>(url.toString());
 
-    return res.data ? res.data.map((a) => toTweet(a, res.includes.users)) : [];
+    return res.data
+      ? res.data.map((a) =>
+          toTweet(a, {
+            hashtags: a.entities?.hashtags ?? [],
+            urls: a.entities?.urls ?? [],
+            mentions: a.entities?.mentions ?? [],
+            users: res.includes.users ?? [],
+          })
+        )
+      : [];
   }
 
-  async getTweet(id: string): Promise<Tweet | null> {
+  async getTweetById(id: string): Promise<Tweet | null> {
     const url = new URL(`${this.config.baseUrl}/2/tweets/${id}`);
     url.searchParams.append('tweet.fields', 'attachments,created_at,entities,public_metrics');
     url.searchParams.append('user.fields', 'id,profile_image_url,name,username');
@@ -411,6 +467,11 @@ export class Twitter {
 
     if (res.errors?.length > 0) return null;
 
-    return toTweet(res.data, res.includes.users);
+    return toTweet(res.data, {
+      hashtags: res.data.entities?.hashtags ?? [],
+      urls: res.data.entities?.urls ?? [],
+      mentions: res.data.entities?.mentions ?? [],
+      users: res.includes.users ?? [],
+    });
   }
 }
