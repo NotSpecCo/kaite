@@ -50,7 +50,9 @@
           <Typography type="bodyLarge" align="center" padding="horizontal"
             >@{user.username}</Typography
           >
-          <Typography type="caption" align="center">{user.location}</Typography>
+          {#if user.location}
+            <Typography type="caption" align="center">{user.location}</Typography>
+          {/if}
           <Divider title="Bio" />
           <Typography type="body">{user.description}</Typography>
           <Divider title="Content" />

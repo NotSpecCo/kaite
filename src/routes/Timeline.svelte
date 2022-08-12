@@ -48,7 +48,7 @@
 
   onMount(async () => {
     const service = new DataService();
-    await service.refreshTweets();
+    await service.fetchNewTimelineTweets();
 
     const latestTimelineId = new KaiOS.LocalStorage().getItem<string>('last_read_id');
 

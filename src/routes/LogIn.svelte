@@ -17,7 +17,7 @@
 
   registerView({});
 
-  async function signin() {
+  async function login() {
     const config = new Twitter().getConfig();
 
     const url = new URL('https://twitter.com/i/oauth2/authorize');
@@ -56,13 +56,13 @@
           <img src="/images/icon_112.png" alt="" />
         </div>
         <Typography align="center" padding="both">
-          Hello! Welcome to Kaite, a Twitter app for KaiOS. Sign in below to get started.
+          Hello! Welcome to Kaite, a Twitter app for KaiOS. Log in below to get started.
         </Typography>
         <Button
-          title="Sign In"
+          title="Log In"
           navi={{
-            itemId: `signin`,
-            onSelect: async () => signin(),
+            itemId: `login`,
+            onSelect: async () => login(),
           }}
         />
       </CardContent>

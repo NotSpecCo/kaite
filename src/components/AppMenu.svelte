@@ -5,11 +5,17 @@
   import { Onyx } from 'onyx-ui/services';
   import { updateView } from 'onyx-ui/stores/view';
   import { getShortcutFromIndex } from 'onyx-ui/utils/getShortcutFromIndex';
-  import { onMount } from 'svelte';
+  import FaAt from 'svelte-icons/fa/FaAt.svelte';
+  import FaHeart from 'svelte-icons/fa/FaHeart.svelte';
   import FaListUl from 'svelte-icons/fa/FaListUl.svelte';
-  import { location, push } from 'svelte-spa-router';
+  import FaRegComment from 'svelte-icons/fa/FaRegComment.svelte';
+  import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte';
+  import FaUser from 'svelte-icons/fa/FaUser.svelte';
+  import { push } from 'svelte-spa-router';
   import type { User } from '../models';
-  import { Twitter } from '../services/twitter';
+  import { DataService } from '../services/data';
+
+  let user: User = new DataService().getStoredUser();
 
   type MenuItem = {
     id: string;
@@ -17,12 +23,15 @@
     route: string;
     icon: any | null;
   };
-  const menuItems: MenuItem[] = [
-    { id: 'timeline', text: 'Timeline', route: '/timeline', icon: FaListUl },
-  ];
-
-  let user: User;
-  onMount(() => new Twitter().getUser().then((res) => (user = res)));
+  const items: MenuItem[] = user
+    ? [
+        { id: 'timeline', text: 'Timeline', route: '/timeline', icon: FaListUl },
+        { id: 'profile', text: 'Profile', route: `/user/${user.id}`, icon: FaUser },
+        { id: 'tweets', text: 'Tweets', route: `/user/${user.id}/tweets`, icon: FaRegComment },
+        { id: 'mentions', text: 'Mentions', route: `/user/${user.id}/mentions`, icon: FaAt },
+        { id: 'likes', text: 'Likes', route: `/user/${user.id}/likes`, icon: FaHeart },
+      ]
+    : [{ id: 'login', text: 'Log In', route: '/login', icon: FaSignInAlt }];
 </script>
 
 <NavGroup groupId="app-menu">
@@ -32,24 +41,23 @@
   </div>
   <div class="scroller" data-nav-scroller>
     <ListItem
-      imageUrl={user?.avatarUrl}
-      imageStyle="circle"
+      icon={items[0].icon}
       imageSize={IconSize.Small}
-      primaryText="My Profile"
+      primaryText={items[0].text}
       navi={{
-        itemId: 'profile',
+        itemId: items[0].id,
         shortcutKey: getShortcutFromIndex(0),
         onSelect: () => {
           Onyx.appMenu.close();
-          if ($location === '/profile') {
+          if (window.location.hash.startsWith(`#${items[0].route}`)) {
             updateView({ viewing: ViewState.Card });
             return;
           }
-          push('/profile');
+          push(items[0].route);
         },
       }}
     />
-    {#each menuItems as item, i}
+    {#each items.slice(1) as item, i}
       <ListItem
         icon={item.icon}
         imageSize={IconSize.Small}

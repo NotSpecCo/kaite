@@ -72,8 +72,8 @@
         <ListItem
           icon={FaLink}
           imageSize={IconSize.Small}
-          primaryText={link.url}
-          secondaryText={link.display_url}
+          primaryText={link.display_url}
+          secondaryText={link.title}
           navi={{
             itemId: `link${i}`,
           }}

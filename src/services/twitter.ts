@@ -89,7 +89,7 @@ export class Twitter {
   }
 
   async isLoggedIn(): Promise<boolean> {
-    const user = await this.getUser();
+    const user = await this.getUserWithTokens();
     return !!user;
   }
 
@@ -118,7 +118,7 @@ export class Twitter {
     return result;
   }
 
-  async getUser(): Promise<UserWithTokens | null> {
+  async getUserWithTokens(): Promise<UserWithTokens | null> {
     let user = new KaiOS.LocalStorage().getItem<UserWithTokens>('twitter_user');
     if (!user) return null;
 
@@ -205,7 +205,7 @@ export class Twitter {
 
   private httpGet<T>(url: string, responseType: 'json' | 'text' | 'blob' = 'json'): Promise<T> {
     return new Promise(async (resolve, reject) => {
-      const tokens = await this.getUser();
+      const tokens = await this.getUserWithTokens();
       if (!tokens) {
         console.error('Not logged in!');
         return reject('Not logged in!');
@@ -241,7 +241,7 @@ export class Twitter {
 
   private httpPost<T>(url: string, body: any): Promise<ApiResponse<T>> {
     return new Promise(async (resolve, reject) => {
-      const tokens = await this.getUser();
+      const tokens = await this.getUserWithTokens();
       if (!tokens) {
         console.error('Not logged in!');
         return reject('Not logged in!');
@@ -285,7 +285,7 @@ export class Twitter {
   }
 
   async getFeed(sinceId?: string): Promise<Tweet[]> {
-    const user = await this.getUser();
+    const user = await this.getUserWithTokens();
     const url = new URL(
       `${this.config.baseUrl}/2/users/${user.id}/timelines/reverse_chronological`
     );

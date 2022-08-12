@@ -1,4 +1,5 @@
-import type { Tweet, User } from '../models';
+import KaiOS from 'kaios-lib';
+import type { Tweet, User, UserWithTokens } from '../models';
 import { Database } from './database';
 import { Twitter } from './twitter';
 
@@ -12,6 +13,16 @@ export class DataService {
   }
 
   // Users
+
+  public getStoredUser(): User {
+    let result = new KaiOS.LocalStorage().getItem<UserWithTokens>('twitter_user');
+    return result;
+  }
+
+  public getCurrentUser(): Promise<User> {
+    let result = this.twitter.getCurrentUser();
+    return result;
+  }
 
   public async getUserById(id: string): Promise<User> {
     const result = await this.twitter.getUserById(id);
@@ -35,7 +46,7 @@ export class DataService {
 
   // Tweets
 
-  public async refreshTweets(): Promise<Tweet[]> {
+  public async fetchNewTimelineTweets(): Promise<Tweet[]> {
     const latestTweet = await this.database.getLatestTweet();
     const tweets = await this.twitter.getFeed(latestTweet?.id);
     await this.database.addTweets(tweets);

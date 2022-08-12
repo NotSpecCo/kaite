@@ -9,14 +9,14 @@
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
   import type { User } from '../models';
-  import { Twitter } from '../services/twitter';
+  import { DataService } from '../services/data';
 
   registerView({});
 
   let user: User;
 
   onMount(async () => {
-    user = await new Twitter().getUser();
+    user = await new DataService().getCurrentUser();
     updateView({ dataStatus: DataStatus.Loaded });
   });
 </script>
