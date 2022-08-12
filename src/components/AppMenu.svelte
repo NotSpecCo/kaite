@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Divider from 'onyx-ui/components/divider/Divider.svelte';
   import ListItem from 'onyx-ui/components/list/ListItem.svelte';
   import NavGroup from 'onyx-ui/components/nav/NavGroup.svelte';
   import { IconSize, ViewState } from 'onyx-ui/enums';
@@ -10,7 +11,9 @@
   import FaListUl from 'svelte-icons/fa/FaListUl.svelte';
   import FaRegComment from 'svelte-icons/fa/FaRegComment.svelte';
   import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte';
+  import FaSignOutAlt from 'svelte-icons/fa/FaSignOutAlt.svelte';
   import FaUser from 'svelte-icons/fa/FaUser.svelte';
+  import IoIosSettings from 'svelte-icons/io/IoIosSettings.svelte';
   import { push } from 'svelte-spa-router';
   import type { User } from '../models';
   import { DataService } from '../services/data';
@@ -30,6 +33,8 @@
         { id: 'tweets', text: 'Tweets', route: `/user/${user.id}/tweets`, icon: FaRegComment },
         { id: 'mentions', text: 'Mentions', route: `/user/${user.id}/mentions`, icon: FaAt },
         { id: 'likes', text: 'Likes', route: `/user/${user.id}/likes`, icon: FaHeart },
+        { id: 'settings', text: 'Settings', route: `/settings`, icon: IoIosSettings },
+        { id: 'logout', text: 'Log Out', route: `/logout`, icon: FaSignOutAlt },
       ]
     : [{ id: 'login', text: 'Log In', route: '/login', icon: FaSignInAlt }];
 </script>
@@ -57,7 +62,8 @@
         },
       }}
     />
-    {#each items.slice(1) as item, i}
+    <Divider title="My Stuff" />
+    {#each items.slice(1, 5) as item, i}
       <ListItem
         icon={item.icon}
         imageSize={IconSize.Small}
@@ -65,6 +71,26 @@
         navi={{
           itemId: item.id,
           shortcutKey: getShortcutFromIndex(i + 1),
+          onSelect: () => {
+            Onyx.appMenu.close();
+            if (window.location.hash.startsWith(`#${item.route}`)) {
+              updateView({ viewing: ViewState.Card });
+              return;
+            }
+            push(item.route);
+          },
+        }}
+      />
+    {/each}
+    <Divider title="System" />
+    {#each items.slice(5) as item, i}
+      <ListItem
+        icon={item.icon}
+        imageSize={IconSize.Small}
+        primaryText={item.text}
+        navi={{
+          itemId: item.id,
+          shortcutKey: getShortcutFromIndex(i + 5),
           onSelect: () => {
             Onyx.appMenu.close();
             if (window.location.hash.startsWith(`#${item.route}`)) {

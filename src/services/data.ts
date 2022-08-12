@@ -12,6 +12,11 @@ export class DataService {
     this.database = new Database();
   }
 
+  public async logout(): Promise<void> {
+    await this.database.clear();
+    localStorage.clear();
+  }
+
   // Users
 
   public getStoredUser(): User {

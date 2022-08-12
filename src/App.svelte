@@ -6,8 +6,10 @@
   import { onMount } from 'svelte';
   import Router, { location, pop, replace } from 'svelte-spa-router';
   import AppMenu from './components/AppMenu.svelte';
+  import AppSettings from './routes/AppSettings.svelte';
   import Home from './routes/Home.svelte';
   import LogIn from './routes/LogIn.svelte';
+  import LogOut from './routes/LogOut.svelte';
   import Oauth from './routes/Oauth.svelte';
   import Profile from './routes/Profile.svelte';
   import Redirect from './routes/Redirect.svelte';
@@ -24,6 +26,7 @@
   const routes = {
     '/': Home,
     '/login': LogIn,
+    '/logout': LogOut,
     '/oauth': Oauth,
     '/timeline/:tweetId?': Timeline,
     '/profile': Profile,
@@ -31,6 +34,7 @@
     '/user/:userId/tweets/:tweetId?': UserTweets,
     '/user/:userId/mentions/:tweetId?': UserMentions,
     '/user/:userId/likes/:tweetId?': UserLikes,
+    '/settings': AppSettings,
     '*': Redirect,
   };
 

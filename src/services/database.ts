@@ -14,6 +14,10 @@ export class Database extends Dexie {
     this.tweets = this.table('tweets');
   }
 
+  public async clear(): Promise<void> {
+    await this.delete();
+  }
+
   // Tweets
 
   public async addTweet(tweet: Tweet): Promise<void> {

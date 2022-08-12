@@ -16,7 +16,6 @@
   import type { Tweet } from '../models';
 
   export let tweet: Tweet;
-  $: console.log('tweet', tweet);
 </script>
 
 {#if tweet}
