@@ -17,11 +17,11 @@
     if (!code) return;
 
     const twitter = new Twitter();
-    twitter
+    await twitter
       .fetchTokensFromCode(code)
       .then((result) => twitter.setUser(result))
-      .catch((err) => console.log('fetchTokensFromCode err', err))
-      .finally(() => window.close());
+      .catch((err) => console.log('fetchTokensFromCode err', err));
+    window.close();
   });
 
   onMount(async () => {
