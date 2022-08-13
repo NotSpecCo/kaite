@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/garredow/kaite/compare/v1.1.0...v1.2.0) (2022-08-13)
+
+
+### Features
+
+* add media quality setting ([47a112d](https://github.com/garredow/kaite/commit/47a112d7733a4924635d5ff34b94fd61957d89a6))
+* **tweets:** add inline image thumbnails ([036e7ed](https://github.com/garredow/kaite/commit/036e7edc80dadc6a1458b6299b2a517c5aa6f4d4))
+
 # [1.1.0](https://github.com/garredow/kaite/compare/v1.0.0...v1.1.0) (2022-08-13)
 
 
