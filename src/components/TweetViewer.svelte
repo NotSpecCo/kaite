@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { formatDistanceToNowStrict } from 'date-fns';
   import numeral from 'numeral';
   import Divider from 'onyx-ui/components/divider/Divider.svelte';
   import Icon from 'onyx-ui/components/icon/Icon.svelte';
@@ -14,6 +15,7 @@
   import FaRetweet from 'svelte-icons/fa/FaRetweet.svelte';
   import { push } from 'svelte-spa-router';
   import type { Tweet } from '../models';
+  import { settings } from '../stores/settings';
 
   export let tweet: Tweet;
 </script>
@@ -33,7 +35,13 @@
     <div class="text-container">
       {@html tweet.htmlText}
     </div>
-    <Typography color="secondary">{new Date(tweet.createdAt).toLocaleString()}</Typography>
+    {#if $settings.timestamps === 'relative'}
+      <Typography color="secondary"
+        >{formatDistanceToNowStrict(new Date(tweet.createdAt), { addSuffix: true })}</Typography
+      >
+    {:else}
+      <Typography color="secondary">{new Date(tweet.createdAt).toLocaleString()}</Typography>
+    {/if}
     <div class="counts">
       <div>
         <Icon size={IconSize.Smallest}><FaReply /></Icon>
@@ -52,7 +60,7 @@
         <div class="number">{numeral(tweet.likeCount).format('0a')}</div>
       </div>
     </div>
-    {#if tweet.entities?.mentions?.length > 0}
+    {#if $settings.displayMentions && tweet.entities?.mentions?.length > 0}
       <Divider title="Mentions" />
       {#each tweet.entities.mentions as user, i}
         <ListItem
@@ -65,7 +73,7 @@
         />
       {/each}
     {/if}
-    {#if tweet.entities?.urls?.length > 0}
+    {#if $settings.displayLinks && tweet.entities?.urls?.length > 0}
       <Divider title="Links" />
       {#each tweet.entities.urls as link, i}
         <ListItem
@@ -79,7 +87,7 @@
         />
       {/each}
     {/if}
-    {#if tweet.entities?.hashtags?.length > 0}
+    {#if $settings.displayHashtags && tweet.entities?.hashtags?.length > 0}
       <Divider title="Hashtags" />
       {#each tweet.entities.hashtags as hashtag, i}
         <ListItem

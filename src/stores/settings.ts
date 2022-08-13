@@ -32,6 +32,11 @@ const defaultSettings: Settings = {
   // Toaster
   toasterLocation: 'bottom',
   toasterDuration: 3000,
+  // Tweets
+  timestamps: 'relative',
+  displayHashtags: true,
+  displayMentions: true,
+  displayLinks: true,
 };
 
 const storedSettings = Storage.get<Settings>('settings');

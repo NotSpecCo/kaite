@@ -26,9 +26,9 @@
         onSelect: () => replace(`/settings/display`),
       },
       {
-        id: 'features',
-        title: 'Features',
-        onSelect: () => replace(`/settings/features`),
+        id: 'tweets',
+        title: 'Tweets',
+        onSelect: () => replace(`/settings/tweets`),
       },
       {
         id: 'lists',
@@ -129,12 +129,6 @@
             ]}
             onChange={(val) => handleChange('textWeight', val)}
           />
-        </CardContent>
-      </Card>
-    {:else if params.cardId === $view.cards[1].id}
-      <Card cardId={$view.cards[1].id}>
-        <CardHeader />
-        <CardContent>
           <ListHeader
             title="Help Text"
             helpText="In some places, extra information is shown to help the user know what's going on."
@@ -143,6 +137,37 @@
             label="Enabled"
             value={$settings.showHelpText}
             onChange={(val) => handleChange('showHelpText', val)}
+          />
+        </CardContent>
+      </Card>
+    {:else if params.cardId === $view.cards[1].id}
+      <Card cardId={$view.cards[1].id}>
+        <CardHeader />
+        <CardContent>
+          <SelectRow
+            label="Timestamps"
+            value={$settings.timestamps}
+            options={[
+              { id: 'relative', label: 'Relative' },
+              { id: 'absolute', label: 'Absolute' },
+            ]}
+            onChange={(val) => handleChange('timestamps', val)}
+          />
+          <ListHeader title="Sections" />
+          <ToggleRow
+            label="Hashtags"
+            value={$settings.displayHashtags}
+            onChange={(val) => handleChange('displayHashtags', val)}
+          />
+          <ToggleRow
+            label="Mentions"
+            value={$settings.displayMentions}
+            onChange={(val) => handleChange('displayMentions', val)}
+          />
+          <ToggleRow
+            label="Links"
+            value={$settings.displayLinks}
+            onChange={(val) => handleChange('displayLinks', val)}
           />
         </CardContent>
       </Card>
