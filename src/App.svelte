@@ -6,6 +6,7 @@
   import Router, { location, pop, replace } from 'svelte-spa-router';
   import AppMenu from './components/AppMenu.svelte';
   import AppSettings from './routes/AppSettings.svelte';
+  import Compose from './routes/Compose.svelte';
   import Home from './routes/Home.svelte';
   import LogIn from './routes/LogIn.svelte';
   import LogOut from './routes/LogOut.svelte';
@@ -27,6 +28,7 @@
     '/login': LogIn,
     '/logout': LogOut,
     '/oauth': Oauth,
+    '/compose': Compose,
     '/timeline/:tweetId?': Timeline,
     '/profile': Profile,
     '/user/:userId': UserProfile,

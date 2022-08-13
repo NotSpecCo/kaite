@@ -9,6 +9,7 @@
   import FaAt from 'svelte-icons/fa/FaAt.svelte';
   import FaHeart from 'svelte-icons/fa/FaHeart.svelte';
   import FaListUl from 'svelte-icons/fa/FaListUl.svelte';
+  import FaPenFancy from 'svelte-icons/fa/FaPenFancy.svelte';
   import FaRegComment from 'svelte-icons/fa/FaRegComment.svelte';
   import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte';
   import FaSignOutAlt from 'svelte-icons/fa/FaSignOutAlt.svelte';
@@ -28,6 +29,7 @@
   };
   const items: MenuItem[] = user
     ? [
+        { id: 'compose', text: 'Compose', route: '/compose', icon: FaPenFancy },
         { id: 'timeline', text: 'Timeline', route: '/timeline', icon: FaListUl },
         { id: 'profile', text: 'Profile', route: `/user/${user.id}`, icon: FaUser },
         { id: 'tweets', text: 'Tweets', route: `/user/${user.id}/tweets`, icon: FaRegComment },
@@ -48,32 +50,34 @@
     {/if}
   </div>
   <div class="scroller" data-nav-scroller>
-    <ListItem
-      icon={items[0].icon}
-      imageSize={IconSize.Smallest}
-      primaryText={items[0].text}
-      navi={{
-        itemId: items[0].id,
-        shortcutKey: getShortcutFromIndex(0),
-        onSelect: () => {
-          Onyx.appMenu.close();
-          if (window.location.hash.startsWith(`#${items[0].route}`)) {
-            updateView({ viewing: ViewState.Card });
-            return;
-          }
-          push(items[0].route);
-        },
-      }}
-    />
+    {#each items.slice(0, 2) as item, i}
+      <ListItem
+        icon={items[i].icon}
+        imageSize={IconSize.Smallest}
+        primaryText={items[i].text}
+        navi={{
+          itemId: items[i].id,
+          shortcutKey: getShortcutFromIndex(i),
+          onSelect: () => {
+            Onyx.appMenu.close();
+            if (window.location.hash.startsWith(`#${items[i].route}`)) {
+              updateView({ viewing: ViewState.Card });
+              return;
+            }
+            push(items[i].route);
+          },
+        }}
+      />
+    {/each}
     <Divider title="My Stuff" />
-    {#each items.slice(1, 5) as item, i}
+    {#each items.slice(2, 6) as item, i}
       <ListItem
         icon={item.icon}
         imageSize={IconSize.Smallest}
         primaryText={item.text}
         navi={{
           itemId: item.id,
-          shortcutKey: getShortcutFromIndex(i + 1),
+          shortcutKey: getShortcutFromIndex(i + 2),
           onSelect: () => {
             Onyx.appMenu.close();
             if (window.location.hash.startsWith(`#${item.route}`)) {
@@ -86,14 +90,14 @@
       />
     {/each}
     <Divider title="System" />
-    {#each items.slice(5) as item, i}
+    {#each items.slice(6) as item, i}
       <ListItem
         icon={item.icon}
         imageSize={IconSize.Smallest}
         primaryText={item.text}
         navi={{
           itemId: item.id,
-          shortcutKey: getShortcutFromIndex(i + 5),
+          shortcutKey: getShortcutFromIndex(i + 6),
           onSelect: () => {
             Onyx.appMenu.close();
             if (window.location.hash.startsWith(`#${item.route}`)) {

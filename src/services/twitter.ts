@@ -585,6 +585,11 @@ export class Twitter {
     await this.httpDelete(url.toString());
   }
 
+  public async composeTweet(text: string): Promise<void> {
+    const url = new URL(`${this.config.baseUrl}/2/tweets`);
+    await this.httpPost(url.toString(), { text });
+  }
+
   // User Actions
 
   public async followUser(userId: string): Promise<void> {

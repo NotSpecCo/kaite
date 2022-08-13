@@ -105,4 +105,8 @@ export class DataService {
   public async unbookmarkTweet(tweetId: string): Promise<void> {
     await this.twitter.unbookmarkTweet(tweetId);
   }
+
+  public async composeTweet(text: string): Promise<void> {
+    await this.twitter.composeTweet(text);
+  }
 }
