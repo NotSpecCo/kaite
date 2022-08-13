@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Dashboard from 'onyx-ui/components/app/Dashboard.svelte';
   import OnyxApp from 'onyx-ui/components/app/OnyxApp.svelte';
   import { Priority } from 'onyx-ui/enums';
   import { KeyManager, Onyx } from 'onyx-ui/services';
@@ -89,7 +88,4 @@
 <OnyxApp>
   <AppMenu slot="app-menu" />
   <Router {routes} />
-  {#if false}
-    <Dashboard slot="dashboard">Hello</Dashboard>
-  {/if}
 </OnyxApp>

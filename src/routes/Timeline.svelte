@@ -1,5 +1,3 @@
-<svelte:options immutable={true} />
-
 <script lang="ts">
   import KaiOS from 'kaios-lib';
   import Card from 'onyx-ui/components/card/Card.svelte';
