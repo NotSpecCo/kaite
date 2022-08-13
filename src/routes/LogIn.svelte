@@ -26,7 +26,7 @@
     url.searchParams.append('redirect_uri', config.redirectUri);
     url.searchParams.append(
       'scope',
-      'tweet.read offline.access users.read follows.read like.read list.read bookmark.read'
+      'tweet.read tweet.write offline.access users.read follows.read follows.write like.read like.write list.read bookmark.read bookmark.write'
     );
     url.searchParams.append('state', 'state');
     url.searchParams.append('code_challenge', 'challenge');

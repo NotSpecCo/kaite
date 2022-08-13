@@ -6,6 +6,8 @@
   import ListItem from 'onyx-ui/components/list/ListItem.svelte';
   import Typography from 'onyx-ui/components/Typography.svelte';
   import { IconSize } from 'onyx-ui/enums';
+  import { KeyManager, Onyx } from 'onyx-ui/services';
+  import { onDestroy, onMount } from 'svelte';
   import FaAt from 'svelte-icons/fa/FaAt.svelte';
   import FaHashtag from 'svelte-icons/fa/FaHashtag.svelte';
   import FaLink from 'svelte-icons/fa/FaLink.svelte';
@@ -15,9 +17,67 @@
   import FaRetweet from 'svelte-icons/fa/FaRetweet.svelte';
   import { push } from 'svelte-spa-router';
   import type { Tweet } from '../models';
+  import { DataService } from '../services/data';
   import { settings } from '../stores/settings';
 
   export let tweet: Tweet;
+
+  const keyMan = KeyManager.subscribe({
+    onSoftRightLong: () => {
+      Onyx.contextMenu.open({
+        title: 'Tweet',
+        items: [
+          {
+            label: 'Like',
+            onSelect: async () => {
+              await new DataService().likeTweet(tweet.id);
+              Onyx.contextMenu.close();
+            },
+          },
+          {
+            label: 'Unlike',
+            onSelect: async () => {
+              await new DataService().unlikeTweet(tweet.id);
+              Onyx.contextMenu.close();
+            },
+          },
+          {
+            label: 'Retweet',
+            onSelect: async () => {
+              await new DataService().retweetTweet(tweet.id);
+              Onyx.contextMenu.close();
+            },
+          },
+          {
+            label: 'Undo Retweet',
+            onSelect: async () => {
+              await new DataService().unretweetTweet(tweet.id);
+              Onyx.contextMenu.close();
+            },
+          },
+          {
+            label: 'Bookmark',
+            onSelect: async () => {
+              await new DataService().bookmarkTweet(tweet.id);
+              Onyx.contextMenu.close();
+            },
+          },
+          {
+            label: 'Remove Bookmark',
+            onSelect: async () => {
+              await new DataService().unbookmarkTweet(tweet.id);
+              Onyx.contextMenu.close();
+            },
+          },
+        ],
+      });
+
+      return true;
+    },
+  });
+
+  onMount(() => {});
+  onDestroy(() => keyMan.unsubscribe());
 </script>
 
 {#if tweet}
@@ -30,6 +90,18 @@
       navi={{
         itemId: 'author',
         onSelect: () => push(`/user/${tweet.author.id}`),
+      }}
+      contextMenu={{
+        title: 'Test2',
+        body: 'Context menu body',
+        items: [
+          {
+            label: 'Unfollow',
+            onSelect: async () => {
+              Onyx.contextMenu.close();
+            },
+          },
+        ],
       }}
     />
     <div class="text-container">

@@ -131,6 +131,11 @@ export class Twitter {
     return user;
   }
 
+  public getStoredUser(): User {
+    let result = new KaiOS.LocalStorage().getItem<UserWithTokens>('twitter_user');
+    return result;
+  }
+
   async fetchTokensFromCode(code: string): Promise<Tokens> {
     var body = new URLSearchParams();
     body.append('code', code);
@@ -264,7 +269,44 @@ export class Twitter {
       xhr.addEventListener('error', () => reject({ message: `Failed to POST ${url}` }));
       xhr.open('POST', url, true);
       xhr.setRequestHeader('Authorization', `Bearer ${tokens.accessToken}`);
-      xhr.send(body);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(body));
+    });
+  }
+
+  private httpDelete<T>(url: string, responseType: 'json' | 'text' | 'blob' = 'json'): Promise<T> {
+    return new Promise(async (resolve, reject) => {
+      const tokens = await this.getUserWithTokens();
+      if (!tokens) {
+        console.error('Not logged in!');
+        return reject('Not logged in!');
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const xhr: XMLHttpRequest = new (XMLHttpRequest as any)({
+        mozSystem: true,
+      });
+      if (responseType === 'blob') {
+        xhr.responseType = 'blob';
+      }
+      xhr.addEventListener('load', () => {
+        if (xhr.status >= 400) {
+          return reject({
+            statusCode: xhr.status,
+            message: `Failed to DELETE ${url}`,
+          });
+        }
+
+        if (responseType === 'json') {
+          resolve(JSON.parse(xhr.response));
+        } else {
+          resolve(xhr.response);
+        }
+      });
+      xhr.addEventListener('error', () => reject({ message: `Failed to DELETE ${url}` }));
+      xhr.open('DELETE', url, true);
+      xhr.setRequestHeader('Authorization', `Bearer ${tokens.accessToken}`);
+      xhr.send();
     });
   }
 
@@ -473,5 +515,43 @@ export class Twitter {
       mentions: res.data.entities?.mentions ?? [],
       users: res.includes.users ?? [],
     });
+  }
+
+  // Tweet Actions
+
+  public async likeTweet(tweetId: string): Promise<void> {
+    const user = this.getStoredUser();
+    const url = new URL(`${this.config.baseUrl}/2/users/${user.id}/likes`);
+    await this.httpPost(url.toString(), { tweet_id: tweetId });
+  }
+
+  public async unlikeTweet(tweetId: string): Promise<void> {
+    const user = this.getStoredUser();
+    const url = new URL(`${this.config.baseUrl}/2/users/${user.id}/likes/${tweetId}`);
+    await this.httpDelete(url.toString());
+  }
+
+  public async retweetTweet(tweetId: string): Promise<void> {
+    const user = this.getStoredUser();
+    const url = new URL(`${this.config.baseUrl}/2/users/${user.id}/retweets`);
+    await this.httpPost(url.toString(), { tweet_id: tweetId });
+  }
+
+  public async unretweetTweet(tweetId: string): Promise<void> {
+    const user = this.getStoredUser();
+    const url = new URL(`${this.config.baseUrl}/2/users/${user.id}/retweets/${tweetId}`);
+    await this.httpDelete(url.toString());
+  }
+
+  public async bookmarkTweet(tweetId: string): Promise<void> {
+    const user = this.getStoredUser();
+    const url = new URL(`${this.config.baseUrl}/2/users/${user.id}/bookmarks`);
+    await this.httpPost(url.toString(), { tweet_id: tweetId });
+  }
+
+  public async unbookmarkTweet(tweetId: string): Promise<void> {
+    const user = this.getStoredUser();
+    const url = new URL(`${this.config.baseUrl}/2/users/${user.id}/bookmarks/${tweetId}`);
+    await this.httpDelete(url.toString());
   }
 }

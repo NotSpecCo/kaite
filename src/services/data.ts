@@ -73,4 +73,28 @@ export class DataService {
     let tweet = await this.database.getLatestTweet();
     return tweet;
   }
+
+  public async likeTweet(tweetId: string): Promise<void> {
+    await this.twitter.likeTweet(tweetId);
+  }
+
+  public async unlikeTweet(tweetId: string): Promise<void> {
+    await this.twitter.unlikeTweet(tweetId);
+  }
+
+  public async retweetTweet(tweetId: string): Promise<void> {
+    await this.twitter.retweetTweet(tweetId);
+  }
+
+  public async unretweetTweet(tweetId: string): Promise<void> {
+    await this.twitter.unretweetTweet(tweetId);
+  }
+
+  public async bookmarkTweet(tweetId: string): Promise<void> {
+    await this.twitter.bookmarkTweet(tweetId);
+  }
+
+  public async unbookmarkTweet(tweetId: string): Promise<void> {
+    await this.twitter.unbookmarkTweet(tweetId);
+  }
 }
