@@ -19,6 +19,7 @@
   import UserProfile from './routes/UserProfile.svelte';
   import UserTweets from './routes/UserTweets.svelte';
   import { AuthClient } from './services/authClient';
+  import { KaiAds } from './services/kaiAds';
   import { settings } from './stores/settings';
 
   console.log(`Env: ${process.env.NODE_ENV}`);
@@ -66,6 +67,8 @@
   );
 
   onMount(async () => {
+    KaiAds.startListening();
+
     const code = window.location.search.split('code=')[1];
     if (code) {
       console.log('is oauth flow');

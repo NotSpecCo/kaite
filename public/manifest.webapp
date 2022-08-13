@@ -32,5 +32,8 @@
       "description": "A Twitter client for KaiOS"
     }
   },
-  "default_locale": "en-US"
+  "default_locale": "en-US",
+  "dependencies": {
+    "ads-sdk": "1.5.8"
+  }
 }
