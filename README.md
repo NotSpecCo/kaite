@@ -4,6 +4,8 @@
 
 A Twitter client for KaiOS.
 
+![Device frames](/promo/banner.png?raw=true)
+
 ### Development and testing
 
 `npm run dev` builds the app in watch mode and serves the site. Great for testing your app in a desktop browser.
