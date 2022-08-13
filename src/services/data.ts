@@ -1,4 +1,5 @@
 import type { Tweet, User } from '../models';
+import { AuthClient } from './authClient';
 import { Database } from './database';
 import { Twitter } from './twitter';
 
@@ -13,6 +14,7 @@ export class DataService {
 
   public async logout(): Promise<void> {
     await this.database.clear();
+    AuthClient.logout();
     localStorage.clear();
   }
 

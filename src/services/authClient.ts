@@ -30,7 +30,6 @@ type ApiResponse<T> = {
 };
 
 export class AuthClient {
-  public static user: AuthenticatedUser | null = null;
   private static config: AuthConfig = {
     clientId: 'ZGVuQTZibjJIeWJsRGs2RnZkQm86MTpjaQ',
     baseUrl:
@@ -50,6 +49,15 @@ export class AuthClient {
   }
 
   // User
+
+  private static _user: AuthenticatedUser | null = null;
+  public static get user() {
+    return this._user || new KaiOS.LocalStorage().getItem('authenticated_user') || null;
+  }
+  private static set user(val: AuthenticatedUser | null) {
+    this._user = val;
+    new KaiOS.LocalStorage().setItem('authenticated_user', val);
+  }
 
   public static async login(tokens: TwitterTokens): Promise<void> {
     const formattedTokens = {
@@ -75,14 +83,11 @@ export class AuthClient {
       description: user.data.description,
       ...formattedTokens,
     };
-
-    new KaiOS.LocalStorage().setItem('authenticated_user', this.user);
   }
 
   public static async logout(): Promise<void> {
     console.log('logout');
     this.user = null;
-    new KaiOS.LocalStorage().setItem('authenticated_user', null);
   }
 
   public static async getUser(): Promise<AuthenticatedUser> {
@@ -142,8 +147,8 @@ export class AuthClient {
     if (!this.user) throw new Error('User is not defined');
 
     const body = new URLSearchParams();
-    body.append('refresh_token', this.user.refreshToken);
     body.append('grant_type', 'refresh_token');
+    body.append('refresh_token', this.user.refreshToken);
     body.append('client_id', this.config.clientId);
 
     const tokens = await this.httpPost<TwitterTokens>(
@@ -151,7 +156,7 @@ export class AuthClient {
       body,
       {
         useAuth: false,
-        contentType: 'application/x-www-form-urlencoded`',
+        contentType: 'application/x-www-form-urlencoded',
       }
     );
 
@@ -271,10 +276,4 @@ export class AuthClient {
       xhr.send();
     });
   }
-}
-
-// On initial load, check storage for a user
-const storedUser = new KaiOS.LocalStorage().getItem<AuthenticatedUser | null>('authenticated_user');
-if (storedUser) {
-  AuthClient.user = storedUser;
 }
