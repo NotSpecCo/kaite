@@ -80,7 +80,7 @@
     }
 
     console.log('is logged in');
-    replace(`/timeline`);
+    if ($location === '/') replace(`/timeline`);
   });
 
   $: Onyx.settings.update($settings);
