@@ -92,12 +92,26 @@
         onSelect: () => push(`/user/${tweet.author.id}`),
       }}
       contextMenu={{
-        title: 'Test2',
-        body: 'Context menu body',
+        title: tweet.author.name || `@${tweet.author.username}`,
         items: [
+          {
+            label: 'View Profile',
+            onSelect: async () => {
+              push(`/user/${tweet.author.id}`);
+              Onyx.contextMenu.close();
+            },
+          },
+          {
+            label: 'Follow',
+            onSelect: async () => {
+              await new DataService().followUser(tweet.author.id);
+              Onyx.contextMenu.close();
+            },
+          },
           {
             label: 'Unfollow',
             onSelect: async () => {
+              await new DataService().unfollowUser(tweet.author.id);
               Onyx.contextMenu.close();
             },
           },
@@ -141,6 +155,32 @@
           primaryText={user.username}
           navi={{
             itemId: `mention${i}`,
+          }}
+          contextMenu={{
+            title: `@${user.username}`,
+            items: [
+              {
+                label: 'View Profile',
+                onSelect: async () => {
+                  push(`/user/${user.id}`);
+                  Onyx.contextMenu.close();
+                },
+              },
+              {
+                label: 'Follow',
+                onSelect: async () => {
+                  await new DataService().followUser(user.id);
+                  Onyx.contextMenu.close();
+                },
+              },
+              {
+                label: 'Unfollow',
+                onSelect: async () => {
+                  await new DataService().unfollowUser(user.id);
+                  Onyx.contextMenu.close();
+                },
+              },
+            ],
           }}
         />
       {/each}

@@ -49,6 +49,14 @@ export class DataService {
     return result;
   }
 
+  public async followUser(userId: string): Promise<void> {
+    await this.twitter.followUser(userId);
+  }
+
+  public async unfollowUser(userId: string): Promise<void> {
+    await this.twitter.unfollowUser(userId);
+  }
+
   // Tweets
 
   public async fetchNewTimelineTweets(): Promise<Tweet[]> {

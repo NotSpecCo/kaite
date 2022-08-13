@@ -554,4 +554,18 @@ export class Twitter {
     const url = new URL(`${this.config.baseUrl}/2/users/${user.id}/bookmarks/${tweetId}`);
     await this.httpDelete(url.toString());
   }
+
+  // User Actions
+
+  public async followUser(userId: string): Promise<void> {
+    const user = this.getStoredUser();
+    const url = new URL(`${this.config.baseUrl}/2/users/${user.id}/following`);
+    await this.httpPost(url.toString(), { target_user_id: userId });
+  }
+
+  public async unfollowUser(userId: string): Promise<void> {
+    const user = this.getStoredUser();
+    const url = new URL(`${this.config.baseUrl}/2/users/${user.id}/following/${userId}`);
+    await this.httpDelete(url.toString());
+  }
 }
