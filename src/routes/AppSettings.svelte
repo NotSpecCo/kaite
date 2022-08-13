@@ -169,10 +169,22 @@
             value={$settings.displayLinks}
             onChange={(val) => handleChange('displayLinks', val)}
           />
+          <ListHeader title="Media" />
           <ToggleRow
-            label="Media"
+            label="Display Media"
             value={$settings.displayMedia}
             onChange={(val) => handleChange('displayMedia', val)}
+          />
+          <SelectRow
+            label="Quality"
+            value={$settings.mediaQuality}
+            options={[
+              { id: 'lowest', label: 'Lowest' },
+              { id: 'low', label: 'Low' },
+              { id: 'medium', label: 'Medium' },
+              { id: 'high', label: 'High' },
+            ]}
+            onChange={(val) => handleChange('mediaQuality', val)}
           />
         </CardContent>
       </Card>

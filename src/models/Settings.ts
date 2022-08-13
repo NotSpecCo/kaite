@@ -6,4 +6,5 @@ export type Settings = BaseSettings & {
   displayLinks: boolean;
   displayHashtags: boolean;
   displayMedia: boolean;
+  mediaQuality: 'lowest' | 'low' | 'medium' | 'high';
 };

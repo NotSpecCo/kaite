@@ -38,6 +38,7 @@ const defaultSettings: Settings = {
   displayMentions: true,
   displayLinks: true,
   displayMedia: true,
+  mediaQuality: 'low',
 };
 
 const storedSettings = Storage.get<Settings>('settings');

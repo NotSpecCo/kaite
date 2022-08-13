@@ -126,7 +126,7 @@
     {#if $settings.displayMedia && tweet.attachments?.media?.length > 0}
       {#each tweet.attachments.media as media, i}
         <ImageRow
-          imageUrl={new DynamicImage(media.url).toSize('thumb')}
+          imageUrl={new DynamicImage(media.url).toQuality($settings.mediaQuality)}
           navi={{
             itemId: `image${i}`,
           }}
