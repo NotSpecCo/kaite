@@ -1,3 +1,19 @@
+# [1.1.0](https://github.com/garredow/kaite/compare/v1.0.0...v1.1.0) (2022-08-13)
+
+
+### Bug Fixes
+
+* fix routing on login ([910b233](https://github.com/garredow/kaite/commit/910b2334b77133c97225e1892e339f3ec568a24d))
+
+
+### Features
+
+* add app settings ([36f4614](https://github.com/garredow/kaite/commit/36f4614235a18489ee6b700ac7234b036b2417ff))
+* add tweet display options ([9170fff](https://github.com/garredow/kaite/commit/9170fffcb2a3b93d91e62db7ce70dbbc25803ae3))
+* add user avatar to app menu ([7402966](https://github.com/garredow/kaite/commit/7402966214561c3764de681704c048640f8e20e0))
+* **tweets:** add like, retweet, and bookmark ([80da3a0](https://github.com/garredow/kaite/commit/80da3a0a97527da26263b956d3a6bb54c5c34ae8))
+* **users:** add follow and unfollow actions ([2b224c0](https://github.com/garredow/kaite/commit/2b224c076860dcdab4cee303115077ccf39ab159))
+
 # 1.0.0 (2022-08-13)
 
 
