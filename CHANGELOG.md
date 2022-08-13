@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/garredow/kaite/compare/v1.4.0...v1.5.0) (2022-08-13)
+
+
+### Bug Fixes
+
+* **tweets:** fix displaying tweets that contain gifs or videos ([54380b8](https://github.com/garredow/kaite/commit/54380b88171ab3619a981a0e5f7c80070b65ba99))
+
+
+### Features
+
+* **tweets:** add support for viewing polls ([013d9fa](https://github.com/garredow/kaite/commit/013d9fa1a5913ccc420af5b094a5b1eb11420707))
+
 # [1.4.0](https://github.com/garredow/kaite/compare/v1.3.0...v1.4.0) (2022-08-13)
 
 
