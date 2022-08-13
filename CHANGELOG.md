@@ -1,3 +1,16 @@
+# [1.3.0](https://github.com/garredow/kaite/compare/v1.2.0...v1.3.0) (2022-08-13)
+
+
+### Bug Fixes
+
+* improve oauth flow ([bff0d7c](https://github.com/garredow/kaite/commit/bff0d7cb29b6ded8d1152298ed58682aa7a58ef1))
+
+
+### Features
+
+* add compose tweet route ([30de064](https://github.com/garredow/kaite/commit/30de064617df20ad632143925750c39178f4ce83))
+* add onboarding instructions ([cf37c20](https://github.com/garredow/kaite/commit/cf37c20ed1dea4380f75d0830c26a05e555f5980))
+
 # [1.2.0](https://github.com/garredow/kaite/compare/v1.1.0...v1.2.0) (2022-08-13)
 
 
