@@ -1,4 +1,6 @@
-# kaite
+# Kaite
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/garredow/kaite/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/garredow/kaite/tree/main)
 
 A Twitter client for KaiOS.
 
