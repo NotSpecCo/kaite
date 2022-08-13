@@ -18,7 +18,7 @@
   import UserMentions from './routes/UserMentions.svelte';
   import UserProfile from './routes/UserProfile.svelte';
   import UserTweets from './routes/UserTweets.svelte';
-  import { Twitter } from './services/twitter';
+  import { AuthClient } from './services/authClient';
   import { settings } from './stores/settings';
 
   console.log(`Env: ${process.env.NODE_ENV}`);
@@ -73,8 +73,7 @@
       return;
     }
 
-    const loggedIn = await new Twitter().isLoggedIn();
-    if (!loggedIn) {
+    if (!AuthClient.user) {
       console.log('is not logged in');
       replace(`/login`);
       return;

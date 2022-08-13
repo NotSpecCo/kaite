@@ -8,7 +8,7 @@
   import { DataStatus } from 'onyx-ui/enums';
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
-  import { Twitter } from '../services/twitter';
+  import { AuthClient } from '../services/authClient';
 
   registerView({});
 
@@ -16,11 +16,9 @@
     const code = window.location.search.split('code=')[1];
     if (!code) return;
 
-    const twitter = new Twitter();
-    await twitter
-      .fetchTokensFromCode(code)
-      .then((result) => twitter.setUser(result))
-      .catch((err) => console.log('fetchTokensFromCode err', err));
+    await AuthClient.getTokensFromCode(code).catch((err) =>
+      console.log('fetchTokensFromCode err', err)
+    );
     window.close();
   });
 

@@ -16,10 +16,9 @@
   import FaUser from 'svelte-icons/fa/FaUser.svelte';
   import IoIosSettings from 'svelte-icons/io/IoIosSettings.svelte';
   import { push } from 'svelte-spa-router';
-  import type { User } from '../models';
-  import { DataService } from '../services/data';
+  import { AuthClient } from '../services/authClient';
 
-  let user: User = new DataService().getStoredUser();
+  let user = AuthClient.user;
 
   type MenuItem = {
     id: string;

@@ -11,30 +11,16 @@
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
   import { replace } from 'svelte-spa-router';
-  import { Twitter } from '../services/twitter';
+  import { AuthClient } from '../services/authClient';
 
   const localStorage = new KaiOS.LocalStorage();
 
   registerView({});
 
   async function login() {
-    const config = new Twitter().getConfig();
-
-    const url = new URL('https://twitter.com/i/oauth2/authorize');
-    url.searchParams.append('response_type', 'code');
-    url.searchParams.append('client_id', config.clientId);
-    url.searchParams.append('redirect_uri', config.redirectUri);
-    url.searchParams.append(
-      'scope',
-      'tweet.read tweet.write offline.access users.read follows.read follows.write like.read like.write list.read bookmark.read bookmark.write'
-    );
-    url.searchParams.append('state', 'state');
-    url.searchParams.append('code_challenge', 'challenge');
-    url.searchParams.append('code_challenge_method', 'plain');
-
-    const windowRef = window.open(url.toString());
+    const windowRef = window.open(AuthClient.buildLoginUrl());
     const timer = setInterval(() => {
-      const user = localStorage.getItem('twitter_user');
+      const user = localStorage.getItem('authenticated_user');
       if (user) {
         clearInterval(timer);
         replace('/');

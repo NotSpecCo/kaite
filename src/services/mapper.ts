@@ -1,5 +1,4 @@
-import type { Tweet, User } from '../models';
-import type { TwitterTweet, TwitterUser } from './twitter';
+import type { Tokens, Tweet, TwitterTokens, TwitterTweet, TwitterUser, User } from '../models';
 
 type TwitterEntities = {
   hashtags: {
@@ -113,5 +112,13 @@ export function toUser(source: TwitterUser): User {
     tweetCount: source.public_metrics.tweet_count,
     listedCount: source.public_metrics.listed_count,
     createdAt: source.created_at,
+  };
+}
+
+export function toTokens(source: TwitterTokens): Tokens {
+  return {
+    accessToken: source.access_token,
+    refreshToken: source.refresh_token,
+    tokenExpiresAt: new Date(new Date().valueOf() + source.expires_in * 1000).toISOString(),
   };
 }
