@@ -1,4 +1,4 @@
-import type { Tweet, TwitterTweet, TwitterUser, User } from '../models';
+import type { Tweet, TwitterPoll, TwitterTweet, TwitterUser, User } from '../models';
 import { AuthClient } from './authClient';
 import { toTweet, toUser } from './mapper';
 
@@ -7,6 +7,7 @@ type ApiResponse<T> = {
   errors?: any[];
   includes?: {
     users?: TwitterUser[];
+    polls?: TwitterPoll[];
     media?: {
       media_key: string;
       type: string;
@@ -20,7 +21,8 @@ const tweetFields = 'attachments,created_at,entities,public_metrics';
 const userFields = 'profile_image_url,description,location,public_metrics';
 const pollFields = 'duration_minutes,end_datetime,id,options,voting_status';
 const mediaFields = 'url,preview_image_url,media_key';
-const expansions = 'author_id,attachments.media_keys,entities.mentions.username';
+const expansions =
+  'author_id,attachments.media_keys,attachments.poll_ids,entities.mentions.username';
 
 export class Twitter {
   users = {
@@ -63,6 +65,7 @@ export class Twitter {
             mentions: a.entities?.mentions ?? [],
             users: res.includes.users ?? [],
             media: res.includes.media ?? [],
+            polls: res.includes.polls ?? [],
           })
         ) ?? []
       );
@@ -90,6 +93,7 @@ export class Twitter {
               mentions: a.entities?.mentions ?? [],
               users: res.includes.users ?? [],
               media: res.includes.media ?? [],
+              polls: res.includes.polls ?? [],
             })
           )
         : [];
@@ -117,6 +121,7 @@ export class Twitter {
               mentions: a.entities?.mentions ?? [],
               users: res.includes.users ?? [],
               media: res.includes.media ?? [],
+              polls: res.includes.polls ?? [],
             })
           )
         : [];
@@ -144,6 +149,7 @@ export class Twitter {
               mentions: a.entities?.mentions ?? [],
               users: res.includes.users ?? [],
               media: res.includes.media ?? [],
+              polls: res.includes.polls ?? [],
             })
           )
         : [];
@@ -177,6 +183,7 @@ export class Twitter {
         mentions: res.data.entities?.mentions ?? [],
         users: res.includes.users ?? [],
         media: res.includes.media ?? [],
+        polls: res.includes.polls ?? [],
       });
     },
     async like(tweetId: string): Promise<void> {

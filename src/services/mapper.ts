@@ -1,4 +1,12 @@
-import type { Tokens, Tweet, TwitterTokens, TwitterTweet, TwitterUser, User } from '../models';
+import type {
+  Tokens,
+  Tweet,
+  TwitterPoll,
+  TwitterTokens,
+  TwitterTweet,
+  TwitterUser,
+  User,
+} from '../models';
 
 type TwitterEntities = {
   hashtags: {
@@ -19,6 +27,7 @@ type TwitterEntities = {
     preview_image_url?: string;
   }[];
   users: TwitterUser[];
+  polls: TwitterPoll[];
 };
 
 function formatEntities(text: string, entities: TwitterEntities): string {
@@ -95,6 +104,17 @@ export function toTweet(source: TwitterTweet, entities: TwitterEntities): Tweet 
         url: entity.url || entity.preview_image_url,
       };
     });
+  }
+
+  if (source.attachments?.poll_ids?.[0]) {
+    const poll = entities.polls.find((a) => a.id === source.attachments?.poll_ids?.[0]);
+    result.attachments.poll = {
+      id: poll.id,
+      duration: poll.duration_minutes * 60,
+      endsAt: poll.end_datetime,
+      status: poll.voting_status,
+      options: poll.options,
+    };
   }
 
   return result;

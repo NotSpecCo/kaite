@@ -21,6 +21,7 @@
   import { settings } from '../stores/settings';
   import { DynamicImage } from '../utils';
   import ImageRow from './ImageRow.svelte';
+  import PollViewer from './PollViewer.svelte';
 
   export let tweet: Tweet;
 
@@ -123,6 +124,14 @@
     <div class="text-container">
       {@html tweet.htmlText}
     </div>
+    {#if tweet.attachments?.poll}
+      <PollViewer
+        poll={tweet.attachments?.poll}
+        navi={{
+          itemId: 'poll',
+        }}
+      />
+    {/if}
     {#if $settings.displayMedia && tweet.attachments?.media?.length > 0}
       {#each tweet.attachments.media as media, i}
         <ImageRow

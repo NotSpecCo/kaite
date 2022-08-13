@@ -1,3 +1,5 @@
+import type { Poll } from './Poll';
+
 export type Tweet = {
   id: string;
   author: {
@@ -33,6 +35,7 @@ export type Tweet = {
       type: string;
       url: string;
     }[];
+    poll?: Poll;
   };
   createdAt: string;
   nextTweetId?: string;

@@ -1,6 +1,7 @@
 export type TwitterTweet = {
   attachments?: {
     media_keys?: string[];
+    poll_ids?: string[];
   };
   author_id: string;
   created_at: string;
