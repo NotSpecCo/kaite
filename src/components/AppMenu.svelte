@@ -43,11 +43,14 @@
   <div class="header">
     <img class="logo" src="/images/icon_112.png" alt="" />
     <div class="app-name">Kaite</div>
+    {#if user}
+      <img class="avatar" src={user.avatarUrl} alt="" />
+    {/if}
   </div>
   <div class="scroller" data-nav-scroller>
     <ListItem
       icon={items[0].icon}
-      imageSize={IconSize.Small}
+      imageSize={IconSize.Smallest}
       primaryText={items[0].text}
       navi={{
         itemId: items[0].id,
@@ -66,7 +69,7 @@
     {#each items.slice(1, 5) as item, i}
       <ListItem
         icon={item.icon}
-        imageSize={IconSize.Small}
+        imageSize={IconSize.Smallest}
         primaryText={item.text}
         navi={{
           itemId: item.id,
@@ -86,7 +89,7 @@
     {#each items.slice(5) as item, i}
       <ListItem
         icon={item.icon}
-        imageSize={IconSize.Small}
+        imageSize={IconSize.Smallest}
         primaryText={item.text}
         navi={{
           itemId: item.id,
@@ -124,13 +127,19 @@
   }
   .header > .app-name {
     margin-left: 5px;
+    flex: 1;
+  }
+  .avatar {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
   }
   .scroller {
     overflow-y: auto;
     flex: 1;
   }
   .logo {
-    height: 32px;
-    width: 32px;
+    height: 28px;
+    width: 28px;
   }
 </style>
