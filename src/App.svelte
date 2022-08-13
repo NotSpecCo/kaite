@@ -34,7 +34,7 @@
     '/user/:userId/tweets/:tweetId?': UserTweets,
     '/user/:userId/mentions/:tweetId?': UserMentions,
     '/user/:userId/likes/:tweetId?': UserLikes,
-    '/settings': AppSettings,
+    '/settings/:cardId?': AppSettings,
     '*': Redirect,
   };
 

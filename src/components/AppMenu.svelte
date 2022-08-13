@@ -33,7 +33,7 @@
         { id: 'tweets', text: 'Tweets', route: `/user/${user.id}/tweets`, icon: FaRegComment },
         { id: 'mentions', text: 'Mentions', route: `/user/${user.id}/mentions`, icon: FaAt },
         { id: 'likes', text: 'Likes', route: `/user/${user.id}/likes`, icon: FaHeart },
-        { id: 'settings', text: 'Settings', route: `/settings`, icon: IoIosSettings },
+        { id: 'settings', text: 'Settings', route: `/settings/display`, icon: IoIosSettings },
         { id: 'logout', text: 'Log Out', route: `/logout`, icon: FaSignOutAlt },
       ]
     : [{ id: 'login', text: 'Log In', route: '/login', icon: FaSignInAlt }];
