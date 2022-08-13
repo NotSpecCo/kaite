@@ -11,6 +11,7 @@ type ApiResponse<T> = {
       media_key: string;
       type: string;
       url: string;
+      preview_image_url?: string;
     }[];
   };
 };

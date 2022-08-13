@@ -16,6 +16,7 @@ type TwitterEntities = {
     media_key: string;
     type: string;
     url: string;
+    preview_image_url?: string;
   }[];
   users: TwitterUser[];
 };
@@ -91,7 +92,7 @@ export function toTweet(source: TwitterTweet, entities: TwitterEntities): Tweet 
       return {
         id: entity.media_key,
         type: entity.type,
-        url: entity.url,
+        url: entity.url || entity.preview_image_url,
       };
     });
   }
