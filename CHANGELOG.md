@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/garredow/kaite/compare/v1.3.0...v1.4.0) (2022-08-13)
+
+
+### Bug Fixes
+
+* **oauth:** improve initial login experience ([6d8e132](https://github.com/garredow/kaite/commit/6d8e132f39f3fac72870c313625d0e5467913308))
+
+
+### Features
+
+* add option to enable ads in kaistore build ([5ec4a95](https://github.com/garredow/kaite/commit/5ec4a95e2ba8649c6ff95b46c8394307d366b746))
+
 # [1.3.0](https://github.com/garredow/kaite/compare/v1.2.0...v1.3.0) (2022-08-13)
 
 
