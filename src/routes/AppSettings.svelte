@@ -169,6 +169,11 @@
             value={$settings.displayLinks}
             onChange={(val) => handleChange('displayLinks', val)}
           />
+          <ToggleRow
+            label="Media"
+            value={$settings.displayMedia}
+            onChange={(val) => handleChange('displayMedia', val)}
+          />
         </CardContent>
       </Card>
     {:else if params.cardId === $view.cards[2].id}

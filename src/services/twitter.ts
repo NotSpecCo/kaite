@@ -31,8 +31,8 @@ export type TwitterUser = {
 };
 
 export type TwitterTweet = {
-  attachments: {
-    media_keys: string[];
+  attachments?: {
+    media_keys?: string[];
   };
   author_id: string;
   created_at: string;
@@ -351,6 +351,11 @@ export class Twitter {
       data?: TwitterTweet[];
       includes: {
         users: TwitterUser[];
+        media: {
+          media_key: string;
+          type: string;
+          url: string;
+        }[];
       };
     };
     const res = await this.httpGet<Response>(url.toString());
@@ -362,6 +367,7 @@ export class Twitter {
             urls: a.entities?.urls ?? [],
             mentions: a.entities?.mentions ?? [],
             users: res.includes.users ?? [],
+            media: res.includes.media ?? [],
           })
         )
       : [];
@@ -390,6 +396,11 @@ export class Twitter {
       data?: TwitterTweet[];
       includes: {
         users: TwitterUser[];
+        media: {
+          media_key: string;
+          type: string;
+          url: string;
+        }[];
       };
     };
     const res = await this.httpGet<Response>(url.toString());
@@ -401,6 +412,7 @@ export class Twitter {
             urls: a.entities?.urls ?? [],
             mentions: a.entities?.mentions ?? [],
             users: res.includes.users ?? [],
+            media: res.includes.media ?? [],
           })
         )
       : [];
@@ -429,6 +441,11 @@ export class Twitter {
       data?: TwitterTweet[];
       includes: {
         users: TwitterUser[];
+        media: {
+          media_key: string;
+          type: string;
+          url: string;
+        }[];
       };
     };
     const res = await this.httpGet<Response>(url.toString());
@@ -440,6 +457,7 @@ export class Twitter {
             urls: a.entities?.urls ?? [],
             mentions: a.entities?.mentions ?? [],
             users: res.includes.users ?? [],
+            media: res.includes.media ?? [],
           })
         )
       : [];
@@ -468,6 +486,11 @@ export class Twitter {
       data?: TwitterTweet[];
       includes: {
         users: TwitterUser[];
+        media: {
+          media_key: string;
+          type: string;
+          url: string;
+        }[];
       };
     };
     const res = await this.httpGet<Response>(url.toString());
@@ -479,6 +502,7 @@ export class Twitter {
             urls: a.entities?.urls ?? [],
             mentions: a.entities?.mentions ?? [],
             users: res.includes.users ?? [],
+            media: res.includes.media ?? [],
           })
         )
       : [];
@@ -499,6 +523,11 @@ export class Twitter {
       data: TwitterTweet;
       includes: {
         users: TwitterUser[];
+        media: {
+          media_key: string;
+          type: string;
+          url: string;
+        }[];
       };
       errors?: {
         title: string;
@@ -514,6 +543,7 @@ export class Twitter {
       urls: res.data.entities?.urls ?? [],
       mentions: res.data.entities?.mentions ?? [],
       users: res.includes.users ?? [],
+      media: res.includes.media ?? [],
     });
   }
 

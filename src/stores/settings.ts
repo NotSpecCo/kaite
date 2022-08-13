@@ -37,6 +37,7 @@ const defaultSettings: Settings = {
   displayHashtags: true,
   displayMentions: true,
   displayLinks: true,
+  displayMedia: true,
 };
 
 const storedSettings = Storage.get<Settings>('settings');

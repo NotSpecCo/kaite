@@ -5,4 +5,5 @@ export type Settings = BaseSettings & {
   displayMentions: boolean;
   displayLinks: boolean;
   displayHashtags: boolean;
+  displayMedia: boolean;
 };

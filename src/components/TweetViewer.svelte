@@ -19,6 +19,8 @@
   import type { Tweet } from '../models';
   import { DataService } from '../services/data';
   import { settings } from '../stores/settings';
+  import { DynamicImage } from '../utils';
+  import ImageRow from './ImageRow.svelte';
 
   export let tweet: Tweet;
 
@@ -121,6 +123,16 @@
     <div class="text-container">
       {@html tweet.htmlText}
     </div>
+    {#if $settings.displayMedia && tweet.attachments?.media?.length > 0}
+      {#each tweet.attachments.media as media, i}
+        <ImageRow
+          imageUrl={new DynamicImage(media.url).toSize('thumb')}
+          navi={{
+            itemId: `image${i}`,
+          }}
+        />
+      {/each}
+    {/if}
     {#if $settings.timestamps === 'relative'}
       <Typography color="secondary"
         >{formatDistanceToNowStrict(new Date(tweet.createdAt), { addSuffix: true })}</Typography
@@ -146,6 +158,7 @@
         <div class="number">{numeral(tweet.likeCount).format('0a')}</div>
       </div>
     </div>
+
     {#if $settings.displayMentions && tweet.entities?.mentions?.length > 0}
       <Divider title="Mentions" />
       {#each tweet.entities.mentions as user, i}
@@ -216,9 +229,6 @@
 {/if}
 
 <style>
-  .root {
-  }
-
   .counts {
     display: flex;
     justify-content: space-between;

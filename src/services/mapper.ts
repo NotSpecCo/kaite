@@ -13,6 +13,11 @@ type TwitterEntities = {
     id: string;
     username: string;
   }[];
+  media: {
+    media_key: string;
+    type: string;
+    url: string;
+  }[];
   users: TwitterUser[];
 };
 
@@ -56,6 +61,9 @@ export function toTweet(source: TwitterTweet, entities: TwitterEntities): Tweet 
     retweetCount: source.public_metrics.retweet_count,
     createdAt: source.created_at,
     entities: {},
+    attachments: {
+      media: [],
+    },
   };
 
   if (source.entities?.mentions) {
@@ -76,6 +84,17 @@ export function toTweet(source: TwitterTweet, entities: TwitterEntities): Tweet 
       title: a.title,
       description: a.description,
     }));
+  }
+
+  if (source.attachments?.media_keys?.length > 0) {
+    result.attachments.media = source.attachments.media_keys.map((key) => {
+      const entity = entities.media.find((a) => a.media_key === key);
+      return {
+        id: entity.media_key,
+        type: entity.type,
+        url: entity.url,
+      };
+    });
   }
 
   return result;

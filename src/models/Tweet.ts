@@ -27,6 +27,13 @@ export type Tweet = {
       username: string;
     }[];
   };
+  attachments: {
+    media?: {
+      id: string;
+      type: string;
+      url: string;
+    }[];
+  };
   createdAt: string;
   nextTweetId?: string;
   prevTweetId?: string;
