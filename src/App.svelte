@@ -19,6 +19,7 @@
   import UserMentions from './routes/UserMentions.svelte';
   import UserProfile from './routes/UserProfile.svelte';
   import UserTweets from './routes/UserTweets.svelte';
+  import ViewTweet from './routes/ViewTweet.svelte';
   import { AuthClient } from './services/authClient';
   import { KaiAds } from './services/kaiAds';
   import { settings } from './stores/settings';
@@ -32,6 +33,7 @@
     '/oauth': Oauth,
     '/compose': Compose,
     '/timeline/:tweetId?': Timeline,
+    '/tweet/:tweetId': ViewTweet,
     '/profile': Profile,
     '/user/:userId': UserProfile,
     '/user/:userId/tweets/:tweetId?': UserTweets,
