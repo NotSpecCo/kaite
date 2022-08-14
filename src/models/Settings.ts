@@ -8,4 +8,5 @@ export type Settings = BaseSettings & {
   displayMedia: boolean;
   displayStats: boolean;
   mediaQuality: 'lowest' | 'low' | 'medium' | 'high';
+  mediaSize: 'small' | 'medium' | 'large';
 };

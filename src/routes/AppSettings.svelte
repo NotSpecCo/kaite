@@ -191,6 +191,16 @@
             ]}
             onChange={(val) => handleChange('mediaQuality', val)}
           />
+          <SelectRow
+            label="Size"
+            value={$settings.mediaSize}
+            options={[
+              { id: 'small', label: 'Small' },
+              { id: 'medium', label: 'Medium' },
+              { id: 'large', label: 'Large' },
+            ]}
+            onChange={(val) => handleChange('mediaSize', val)}
+          />
         </CardContent>
       </Card>
     {:else if params.cardId === $view.cards[2].id}
