@@ -3,7 +3,9 @@
   "name": "Kaite",
   "id": "kaite",
   "short_name": "Kaite",
-  "categories": ["social"],
+  "categories": [
+    "social"
+  ],
   "description": "A Twitter client for KaiOS",
   "theme_color": "#1DA1F2",
   "background_color": "#ffffff",
@@ -27,7 +29,7 @@
   "start_url": "/index.html",
   "orientation": "portrait-primary",
   "b2g_features": {
-    "version": "1.6.0",
+    "version": "1.7.0",
     "subtitle": "A Twitter client for KaiOS",
     "permissions": {
       "systemXHR": {
