@@ -1,5 +1,6 @@
 <script lang="ts">
   import numeral from 'numeral';
+  import Button from 'onyx-ui/components/buttons/Button.svelte';
   import Card from 'onyx-ui/components/card/Card.svelte';
   import CardContent from 'onyx-ui/components/card/CardContent.svelte';
   import CardHeader from 'onyx-ui/components/card/CardHeader.svelte';
@@ -8,7 +9,7 @@
   import Typography from 'onyx-ui/components/Typography.svelte';
   import View from 'onyx-ui/components/view/View.svelte';
   import ViewContent from 'onyx-ui/components/view/ViewContent.svelte';
-  import { DataStatus, IconSize } from 'onyx-ui/enums';
+  import { Color, DataStatus, IconSize } from 'onyx-ui/enums';
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
   import FaAt from 'svelte-icons/fa/FaAt.svelte';
@@ -17,9 +18,14 @@
   import FaUserAlt from 'svelte-icons/fa/FaUserAlt.svelte';
   import FaUserFriends from 'svelte-icons/fa/FaUserFriends.svelte';
   import { push } from 'svelte-spa-router';
+  import { AuthClient } from '../services/authClient';
   import { DataService } from '../services/data';
 
   export let params: { userId: string };
+
+  function logout() {
+    push('/logout');
+  }
 
   registerView({});
 
@@ -102,8 +108,20 @@
               // onSelect: () => push(`/user/${params.userId}/tweets`),
             }}
           />
+          {#if user.id === AuthClient.user?.id}
+            <Button
+              title="Log out"
+              navi={{ itemId: 'logout', onSelect: logout }}
+              color={Color.Accent}
+            />
+          {/if}
         {:catch}
           <Typography align="center">Failed to load user data</Typography>
+          <Button
+            title="Log out"
+            navi={{ itemId: 'logout', onSelect: logout }}
+            color={Color.Accent}
+          />
         {/await}
       </CardContent>
     </Card>

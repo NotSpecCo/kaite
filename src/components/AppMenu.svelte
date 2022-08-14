@@ -12,7 +12,6 @@
   import FaPenFancy from 'svelte-icons/fa/FaPenFancy.svelte';
   import FaRegComment from 'svelte-icons/fa/FaRegComment.svelte';
   import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte';
-  import FaSignOutAlt from 'svelte-icons/fa/FaSignOutAlt.svelte';
   import FaUser from 'svelte-icons/fa/FaUser.svelte';
   import IoIosSettings from 'svelte-icons/io/IoIosSettings.svelte';
   import { push } from 'svelte-spa-router';
@@ -35,7 +34,6 @@
         { id: 'mentions', text: 'Mentions', route: `/user/${user.id}/mentions`, icon: FaAt },
         { id: 'likes', text: 'Likes', route: `/user/${user.id}/likes`, icon: FaHeart },
         { id: 'settings', text: 'Settings', route: `/settings/display`, icon: IoIosSettings },
-        { id: 'logout', text: 'Log Out', route: `/logout`, icon: FaSignOutAlt },
       ]
     : [{ id: 'login', text: 'Log In', route: '/login', icon: FaSignInAlt }];
 </script>
