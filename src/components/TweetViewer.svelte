@@ -149,24 +149,26 @@
     {:else}
       <Typography color="secondary">{new Date(tweet.createdAt).toLocaleString()}</Typography>
     {/if}
-    <div class="counts">
-      <div>
-        <Icon size={IconSize.Smallest}><FaReply /></Icon>
-        <div class="number">{numeral(tweet.replyCount).format('0a')}</div>
+    {#if $settings.displayStats}
+      <div class="counts">
+        <div>
+          <Icon size={IconSize.Smallest}><FaReply /></Icon>
+          <div class="number">{numeral(tweet.replyCount).format('0a')}</div>
+        </div>
+        <div>
+          <Icon size={IconSize.Smallest}><FaRetweet /></Icon>
+          <div class="number">{numeral(tweet.retweetCount).format('0a')}</div>
+        </div>
+        <div>
+          <Icon size={IconSize.Smallest}><FaQuoteLeft /></Icon>
+          <div class="number">{numeral(tweet.quoteCount).format('0a')}</div>
+        </div>
+        <div>
+          <Icon size={IconSize.Smallest}><FaRegHeart /></Icon>
+          <div class="number">{numeral(tweet.likeCount).format('0a')}</div>
+        </div>
       </div>
-      <div>
-        <Icon size={IconSize.Smallest}><FaRetweet /></Icon>
-        <div class="number">{numeral(tweet.retweetCount).format('0a')}</div>
-      </div>
-      <div>
-        <Icon size={IconSize.Smallest}><FaQuoteLeft /></Icon>
-        <div class="number">{numeral(tweet.quoteCount).format('0a')}</div>
-      </div>
-      <div>
-        <Icon size={IconSize.Smallest}><FaRegHeart /></Icon>
-        <div class="number">{numeral(tweet.likeCount).format('0a')}</div>
-      </div>
-    </div>
+    {/if}
 
     {#if $settings.displayMentions && tweet.entities?.mentions?.length > 0}
       <Divider title="Mentions" />

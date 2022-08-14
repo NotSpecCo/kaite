@@ -34,6 +34,7 @@ const defaultSettings: Settings = {
   toasterDuration: 3000,
   // Tweets
   timestamps: 'relative',
+  displayStats: true,
   displayHashtags: true,
   displayMentions: true,
   displayLinks: true,

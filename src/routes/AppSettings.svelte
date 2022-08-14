@@ -155,6 +155,11 @@
           />
           <ListHeader title="Sections" />
           <ToggleRow
+            label="Stats"
+            value={$settings.displayStats}
+            onChange={(val) => handleChange('displayStats', val)}
+          />
+          <ToggleRow
             label="Hashtags"
             value={$settings.displayHashtags}
             onChange={(val) => handleChange('displayHashtags', val)}
