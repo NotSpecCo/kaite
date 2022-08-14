@@ -1,5 +1,4 @@
 <script lang="ts">
-  import KaiOS from 'kaios-lib';
   import Card from 'onyx-ui/components/card/Card.svelte';
   import CardContent from 'onyx-ui/components/card/CardContent.svelte';
   import CardHeader from 'onyx-ui/components/card/CardHeader.svelte';
@@ -11,6 +10,7 @@
   import { replace } from 'svelte-spa-router';
   import TweetLoader from '../components/TweetLoader.svelte';
   import { DataService } from '../services/data';
+  import { Storage } from '../services/storage';
 
   export let params: { tweetId?: string };
 
@@ -48,7 +48,7 @@
     const service = new DataService();
     await service.fetchNewTimelineTweets();
 
-    const latestTimelineId = new KaiOS.LocalStorage().getItem<string>('last_read_id');
+    const latestTimelineId = Storage.getItem<string>('last_read_id');
 
     if (!params.tweetId && latestTimelineId) {
       replace(`/timeline/${latestTimelineId}`);
@@ -62,7 +62,7 @@
 
   $: if (params.tweetId) {
     getData = getTweet(params.tweetId);
-    new KaiOS.LocalStorage().setItem('last_read_id', params.tweetId);
+    Storage.setItem('last_read_id', params.tweetId);
   }
 </script>
 

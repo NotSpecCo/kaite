@@ -1,5 +1,4 @@
 <script lang="ts">
-  import KaiOS from 'kaios-lib';
   import Button from 'onyx-ui/components/buttons/Button.svelte';
   import Card from 'onyx-ui/components/card/Card.svelte';
   import CardContent from 'onyx-ui/components/card/CardContent.svelte';
@@ -12,15 +11,14 @@
   import { onMount } from 'svelte';
   import { replace } from 'svelte-spa-router';
   import { AuthClient } from '../services/authClient';
-
-  const localStorage = new KaiOS.LocalStorage();
+  import { Storage } from '../services/storage';
 
   registerView({});
 
   async function login() {
     const windowRef = window.open(AuthClient.buildLoginUrl());
     const timer = setInterval(() => {
-      const user = localStorage.getItem('authenticated_user');
+      const user = Storage.getItem('authenticated_user');
       if (user) {
         clearInterval(timer);
         replace('/');

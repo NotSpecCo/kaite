@@ -1,5 +1,5 @@
-import KaiOS from 'kaios-lib';
 import type { TwitterTokens, TwitterUser } from '../models';
+import { Storage } from './storage';
 
 type AuthenticatedUser = {
   id: string;
@@ -52,11 +52,11 @@ export class AuthClient {
 
   private static _user: AuthenticatedUser | null = null;
   public static get user() {
-    return this._user || new KaiOS.LocalStorage().getItem('authenticated_user') || null;
+    return this._user || Storage.getItem('authenticated_user') || null;
   }
   private static set user(val: AuthenticatedUser | null) {
     this._user = val;
-    new KaiOS.LocalStorage().setItem('authenticated_user', val);
+    Storage.setItem('authenticated_user', val);
   }
 
   public static async login(tokens: TwitterTokens): Promise<void> {

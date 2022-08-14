@@ -9,6 +9,7 @@ import css from 'rollup-plugin-css-only';
 import babel from 'rollup-plugin-babel';
 import replace from '@rollup/plugin-replace';
 import json from '@rollup/plugin-json';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -121,6 +122,8 @@ export default {
     // If we're building for production (npm run build
     // instead of npm run dev), minify
     production && terser(),
+
+    production && visualizer(),
   ],
   watch: {
     clearScreen: false,
