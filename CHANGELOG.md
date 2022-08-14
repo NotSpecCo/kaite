@@ -1,3 +1,18 @@
+# [1.6.0](https://github.com/garredow/kaite/compare/v1.5.0...v1.6.0) (2022-08-14)
+
+
+### Features
+
+* move log out from app menu to profile ([5d60b16](https://github.com/garredow/kaite/commit/5d60b16dd2d158436aa0a70d86ebecb48ffe38db))
+* **tweets:** add option for media size ([a7ad666](https://github.com/garredow/kaite/commit/a7ad6666e2d3836656254ad93065d8ddb43f84da))
+* **tweets:** add option to hide stats ([e992950](https://github.com/garredow/kaite/commit/e9929503cf5e90e843198ecf74899702833292c7))
+
+
+### Performance Improvements
+
+* **database:** greatly improve performance ([2520915](https://github.com/garredow/kaite/commit/25209159fa76df4aa8336df8fca046a5efdf3e4d))
+* reduce bundle size ([76790eb](https://github.com/garredow/kaite/commit/76790eb09fdd60bc6ac08da6069f55ebbe055173))
+
 # [1.5.0](https://github.com/garredow/kaite/compare/v1.4.0...v1.5.0) (2022-08-13)
 
 
