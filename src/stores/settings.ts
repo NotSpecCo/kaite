@@ -16,7 +16,7 @@ const defaultSettings: Settings = {
   enableShortcutKeys: true,
   shortcutKeyLocation: 'right',
   shortcutKeyColor: 'secondary',
-  contextMenuIndicators: true,
+  contextMenuIndicators: false,
   // Theme
   accentColorH: themes[0].values.accentColorH,
   accentColorS: themes[0].values.accentColorS,

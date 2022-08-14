@@ -36,6 +36,6 @@ export type TwitterTweet = {
   text: string;
   referenced_tweets?: {
     id: string;
-    type: 'quoted' | 'replied_to';
+    type: 'quoted' | 'replied_to' | 'retweeted';
   }[];
 };
