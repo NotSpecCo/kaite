@@ -45,6 +45,11 @@ export class DataService {
     return result;
   }
 
+  public async getUserBookmarks(id: string): Promise<Tweet[]> {
+    const result = await this.twitter.users.getBookmarks(id);
+    return result;
+  }
+
   public async followUser(userId: string): Promise<void> {
     await this.twitter.users.follow(userId);
   }

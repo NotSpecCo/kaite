@@ -14,6 +14,7 @@
   import Profile from './routes/Profile.svelte';
   import Redirect from './routes/Redirect.svelte';
   import Timeline from './routes/Timeline.svelte';
+  import UserBookmarks from './routes/UserBookmarks.svelte';
   import UserLikes from './routes/UserLikes.svelte';
   import UserMentions from './routes/UserMentions.svelte';
   import UserProfile from './routes/UserProfile.svelte';
@@ -36,6 +37,7 @@
     '/user/:userId/tweets/:tweetId?': UserTweets,
     '/user/:userId/mentions/:tweetId?': UserMentions,
     '/user/:userId/likes/:tweetId?': UserLikes,
+    '/user/:userId/bookmarks/:tweetId?': UserBookmarks,
     '/settings/:cardId?': AppSettings,
     '*': Redirect,
   };

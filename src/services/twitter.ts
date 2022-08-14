@@ -154,6 +154,34 @@ export class Twitter {
           )
         : [];
     },
+    async getBookmarks(userId: string, sinceId?: string): Promise<Tweet[]> {
+      const url = AuthClient.buildApiUrl(`/2/users/${userId}/bookmarks`);
+      url.searchParams.append('tweet.fields', tweetFields);
+      url.searchParams.append('user.fields', userFields);
+      url.searchParams.append('poll.fields', pollFields);
+      url.searchParams.append('media.fields', mediaFields);
+      url.searchParams.append('expansions', expansions);
+      url.searchParams.append('max_results', '100');
+
+      if (sinceId) {
+        url.searchParams.append('since_id', sinceId);
+      }
+
+      const res = await AuthClient.httpGet<ApiResponse<TwitterTweet[]>>(url.toString());
+
+      return res.data
+        ? res.data.map((a) =>
+            toTweet(a, {
+              hashtags: a.entities?.hashtags ?? [],
+              urls: a.entities?.urls ?? [],
+              mentions: a.entities?.mentions ?? [],
+              users: res.includes.users ?? [],
+              media: res.includes.media ?? [],
+              polls: res.includes.polls ?? [],
+            })
+          )
+        : [];
+    },
     async follow(userId: string): Promise<void> {
       const url = AuthClient.buildApiUrl(`/2/users/${AuthClient.user.id}/following`);
       await AuthClient.httpPost(url.toString(), { target_user_id: userId });

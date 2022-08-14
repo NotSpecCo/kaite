@@ -7,6 +7,7 @@
   import { updateView } from 'onyx-ui/stores/view';
   import { getShortcutFromIndex } from 'onyx-ui/utils/getShortcutFromIndex';
   import FaAt from 'svelte-icons/fa/FaAt.svelte';
+  import FaBookmark from 'svelte-icons/fa/FaBookmark.svelte';
   import FaHeart from 'svelte-icons/fa/FaHeart.svelte';
   import FaListUl from 'svelte-icons/fa/FaListUl.svelte';
   import FaPenFancy from 'svelte-icons/fa/FaPenFancy.svelte';
@@ -33,6 +34,12 @@
         { id: 'tweets', text: 'Tweets', route: `/user/${user.id}/tweets`, icon: FaRegComment },
         { id: 'mentions', text: 'Mentions', route: `/user/${user.id}/mentions`, icon: FaAt },
         { id: 'likes', text: 'Likes', route: `/user/${user.id}/likes`, icon: FaHeart },
+        {
+          id: 'bookmarks',
+          text: 'Bookmarks',
+          route: `/user/${user.id}/bookmarks`,
+          icon: FaBookmark,
+        },
         { id: 'settings', text: 'Settings', route: `/settings/display`, icon: IoIosSettings },
       ]
     : [{ id: 'login', text: 'Log In', route: '/login', icon: FaSignInAlt }];
@@ -67,7 +74,7 @@
       />
     {/each}
     <Divider title="My Stuff" />
-    {#each items.slice(2, 6) as item, i}
+    {#each items.slice(2, 7) as item, i}
       <ListItem
         icon={item.icon}
         imageSize={IconSize.Smallest}
@@ -87,14 +94,14 @@
       />
     {/each}
     <Divider title="System" />
-    {#each items.slice(6) as item, i}
+    {#each items.slice(7) as item, i}
       <ListItem
         icon={item.icon}
         imageSize={IconSize.Smallest}
         primaryText={item.text}
         navi={{
           itemId: item.id,
-          shortcutKey: getShortcutFromIndex(i + 6),
+          shortcutKey: getShortcutFromIndex(i + 7),
           onSelect: () => {
             Onyx.appMenu.close();
             if (window.location.hash.startsWith(`#${item.route}`)) {

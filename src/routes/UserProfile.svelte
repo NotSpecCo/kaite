@@ -13,6 +13,7 @@
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
   import FaAt from 'svelte-icons/fa/FaAt.svelte';
+  import FaBookmark from 'svelte-icons/fa/FaBookmark.svelte';
   import FaHeart from 'svelte-icons/fa/FaHeart.svelte';
   import FaRegComment from 'svelte-icons/fa/FaRegComment.svelte';
   import FaUserAlt from 'svelte-icons/fa/FaUserAlt.svelte';
@@ -22,6 +23,8 @@
   import { DataService } from '../services/data';
 
   export let params: { userId: string };
+
+  const isMe = params.userId === AuthClient.user?.id;
 
   function logout() {
     push('/logout');
@@ -89,6 +92,17 @@
               onSelect: () => push(`/user/${params.userId}/likes`),
             }}
           />
+          {#if isMe}
+            <ListItem
+              icon={FaBookmark}
+              imageSize={IconSize.Smallest}
+              primaryText={`Bookmarks`}
+              navi={{
+                itemId: 'bookmarks',
+                onSelect: () => push(`/user/${params.userId}/bookmarks`),
+              }}
+            />
+          {/if}
           <Divider title="Stats" />
           <ListItem
             icon={FaUserFriends}
