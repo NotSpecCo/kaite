@@ -1,0 +1,51 @@
+{
+  "lang": "en-US",
+  "name": "Kaite",
+  "id": "kaite",
+  "short_name": "Kaite",
+  "categories": ["social"],
+  "description": "A Twitter client for KaiOS",
+  "theme_color": "#1DA1F2",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/images/icon_128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/images/icon_112.png",
+      "type": "image/png",
+      "sizes": "112x112"
+    },
+    {
+      "src": "/images/icon_56.png",
+      "type": "image/png",
+      "sizes": "56x56"
+    }
+  ],
+  "start_url": "/index.html",
+  "orientation": "portrait-primary",
+  "b2g_features": {
+    "version": "1.6.0",
+    "subtitle": "A Twitter client for KaiOS",
+    "permissions": {
+      "systemXHR": {
+        "description": "Required to communicate with Twitter and other vital functions."
+      }
+    },
+    "type": "signed",
+    "focus_color": "#1DA1F2",
+    "origin": "http://kaite.localhost",
+    "developer": {
+      "name": "Garrett Downs",
+      "url": "https://nothing.dev"
+    },
+    "redirects": [
+      {
+        "from": "https://dev.nothing.kaite/oauth",
+        "to": "/index.html"
+      }
+    ]
+  }
+}
