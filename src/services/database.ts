@@ -68,4 +68,11 @@ export class Database extends Dexie {
     PerfLogger.stop('database.getLatestTweets');
     return res;
   }
+
+  public async getTweetCountSinceId(tweetId: string): Promise<number> {
+    PerfLogger.start('database.getTweetCountSinceId');
+    const res = await this.tweets.where('id').above(tweetId).count();
+    PerfLogger.stop('database.getTweetCountSinceId');
+    return res;
+  }
 }

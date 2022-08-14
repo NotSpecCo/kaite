@@ -15,6 +15,7 @@
   export let params: { tweetId?: string };
 
   let getData;
+  let tweetCount = 0;
 
   registerView({});
 
@@ -23,6 +24,7 @@
       getData.then((res) => {
         if (res.prevTweetId) {
           replace(`/timeline/${res.prevTweetId}`);
+          tweetCount += 1;
         }
       });
 
@@ -32,6 +34,7 @@
       getData.then((res) => {
         if (res.nextTweetId) {
           replace(`/timeline/${res.nextTweetId}`);
+          tweetCount -= 1;
         }
       });
       return true;
@@ -52,9 +55,13 @@
 
     if (!params.tweetId && latestTimelineId) {
       replace(`/timeline/${latestTimelineId}`);
+      tweetCount = await service.getTweetCountSinceId(latestTimelineId);
     } else if (!params.tweetId) {
       const latestTweet = await service.getLatestTweet();
       replace(`/timeline/${latestTweet.id}`);
+      tweetCount = await service.getTweetCountSinceId(latestTweet.id);
+    } else {
+      tweetCount = await service.getTweetCountSinceId(params.tweetId);
     }
   });
 
@@ -69,7 +76,7 @@
 <View>
   <ViewContent>
     <Card>
-      <CardHeader title="Timeline" />
+      <CardHeader title={`Timeline ${tweetCount > 0 ? `(${tweetCount})` : ''}`} />
       <CardContent>
         <TweetLoader tweetId={params.tweetId} />
       </CardContent>

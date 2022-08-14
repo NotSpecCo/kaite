@@ -73,6 +73,10 @@ export class DataService {
     return tweet;
   }
 
+  public getTweetCountSinceId(tweetId: string): Promise<number> {
+    return this.database.getTweetCountSinceId(tweetId);
+  }
+
   public async getLatestTweet(): Promise<Tweet | null> {
     let tweet = await this.database.getLatestTweet();
     return tweet;
