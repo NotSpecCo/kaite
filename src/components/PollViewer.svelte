@@ -17,6 +17,8 @@
 
   function getPercentage(votes: number): number {
     const totalVotes = getTotalVotes();
+    if (totalVotes === 0) return 0;
+
     const pct = Math.round((votes / totalVotes) * 100);
     return pct;
   }
@@ -58,6 +60,7 @@
     right: 0;
     background-color: #eaeaea;
     border-radius: 3px;
+    border-left: 3px solid #eaeaea;
   }
 
   .option > .text {
