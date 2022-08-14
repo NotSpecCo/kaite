@@ -34,4 +34,8 @@ export type TwitterTweet = {
     retweet_count: number;
   };
   text: string;
+  referenced_tweets?: {
+    id: string;
+    type: 'quoted' | 'replied_to';
+  }[];
 };

@@ -73,6 +73,8 @@ export function toTweet(source: TwitterTweet, entities: TwitterEntities): Tweet 
     attachments: {
       media: [],
     },
+    repliedToTweetId: source.referenced_tweets?.find((a) => a.type === 'replied_to')?.id,
+    quotedTweetId: source.referenced_tweets?.find((a) => a.type === 'quoted')?.id,
   };
 
   if (source.entities?.mentions) {

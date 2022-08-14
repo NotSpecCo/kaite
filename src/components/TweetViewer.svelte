@@ -21,6 +21,7 @@
   import { settings } from '../stores/settings';
   import { DynamicImage } from '../utils';
   import ImageRow from './ImageRow.svelte';
+  import InlineTweetLoader from './InlineTweetLoader.svelte';
   import PollViewer from './PollViewer.svelte';
 
   export let tweet: Tweet;
@@ -141,6 +142,14 @@
           }}
         />
       {/each}
+    {/if}
+    {#if tweet.quotedTweetId}
+      <div class="quoted-tweet">
+        <InlineTweetLoader
+          tweetId={tweet.quotedTweetId}
+          navi={{ itemId: 'quotedTweet', onSelect: () => push(`/tweet/${tweet.quotedTweetId}`) }}
+        />
+      </div>
     {/if}
     {#if $settings.timestamps === 'relative'}
       <Typography color="secondary"
@@ -269,5 +278,10 @@
   }
   :global(.tweet-entity-mention) {
     color: var(--accent-color);
+  }
+
+  .quoted-tweet {
+    border-left: 2px solid var(--accent-color);
+    margin-left: 10px;
   }
 </style>

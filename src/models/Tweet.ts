@@ -38,6 +38,8 @@ export type Tweet = {
     poll?: Poll;
   };
   createdAt: string;
+  repliedToTweetId?: string;
+  quotedTweetId?: string;
   nextTweetId?: string;
   prevTweetId?: string;
 };

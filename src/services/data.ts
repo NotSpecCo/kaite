@@ -73,6 +73,7 @@ export class DataService {
 
     if (!tweet) {
       tweet = await this.twitter.tweets.getById(id);
+      await this.database.addTweet(tweet);
     }
 
     return tweet;

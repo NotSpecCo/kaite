@@ -22,7 +22,7 @@ const userFields = 'profile_image_url,description,location,public_metrics';
 const pollFields = 'duration_minutes,end_datetime,id,options,voting_status';
 const mediaFields = 'url,preview_image_url,media_key';
 const expansions =
-  'author_id,attachments.media_keys,attachments.poll_ids,entities.mentions.username';
+  'author_id,attachments.media_keys,attachments.poll_ids,entities.mentions.username,referenced_tweets.id,referenced_tweets.id.author_id';
 
 export class Twitter {
   users = {
