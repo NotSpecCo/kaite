@@ -4,10 +4,10 @@
   import Divider from 'onyx-ui/components/divider/Divider.svelte';
   import Icon from 'onyx-ui/components/icon/Icon.svelte';
   import ListItem from 'onyx-ui/components/list/ListItem.svelte';
+  import NavItem from 'onyx-ui/components/nav/NavItem.svelte';
   import Typography from 'onyx-ui/components/Typography.svelte';
   import { IconSize } from 'onyx-ui/enums';
-  import { KeyManager, Onyx } from 'onyx-ui/services';
-  import { onDestroy, onMount } from 'svelte';
+  import { Onyx } from 'onyx-ui/services';
   import FaAt from 'svelte-icons/fa/FaAt.svelte';
   import FaHashtag from 'svelte-icons/fa/FaHashtag.svelte';
   import FaLink from 'svelte-icons/fa/FaLink.svelte';
@@ -25,10 +25,49 @@
   import PollViewer from './PollViewer.svelte';
 
   export let tweet: Tweet;
+</script>
 
-  const keyMan = KeyManager.subscribe({
-    onSoftRightLong: () => {
-      Onyx.contextMenu.open({
+{#if tweet}
+  <div class="root">
+    <ListItem
+      imageUrl={tweet.author.avatarUrl}
+      imageStyle="circle"
+      primaryText={tweet.author.name}
+      secondaryText={`@${tweet.author.username}`}
+      navi={{
+        itemId: 'author',
+        onSelect: () => push(`/user/${tweet.author.id}`),
+      }}
+      contextMenu={{
+        title: tweet.author.name || `@${tweet.author.username}`,
+        items: [
+          {
+            label: 'View Profile',
+            onSelect: async () => {
+              push(`/user/${tweet.author.id}`);
+              Onyx.contextMenu.close();
+            },
+          },
+          {
+            label: 'Follow',
+            onSelect: async () => {
+              await new DataService().followUser(tweet.author.id);
+              Onyx.contextMenu.close();
+            },
+          },
+          {
+            label: 'Unfollow',
+            onSelect: async () => {
+              await new DataService().unfollowUser(tweet.author.id);
+              Onyx.contextMenu.close();
+            },
+          },
+        ],
+      }}
+    />
+    <NavItem
+      navi={{ itemId: 'tweet' }}
+      contextMenu={{
         title: 'Tweet',
         items: [
           {
@@ -74,57 +113,12 @@
             },
           },
         ],
-      });
-
-      return true;
-    },
-  });
-
-  onMount(() => {});
-  onDestroy(() => keyMan.unsubscribe());
-</script>
-
-{#if tweet}
-  <div class="root">
-    <ListItem
-      imageUrl={tweet.author.avatarUrl}
-      imageStyle="circle"
-      primaryText={tweet.author.name}
-      secondaryText={`@${tweet.author.username}`}
-      navi={{
-        itemId: 'author',
-        onSelect: () => push(`/user/${tweet.author.id}`),
       }}
-      contextMenu={{
-        title: tweet.author.name || `@${tweet.author.username}`,
-        items: [
-          {
-            label: 'View Profile',
-            onSelect: async () => {
-              push(`/user/${tweet.author.id}`);
-              Onyx.contextMenu.close();
-            },
-          },
-          {
-            label: 'Follow',
-            onSelect: async () => {
-              await new DataService().followUser(tweet.author.id);
-              Onyx.contextMenu.close();
-            },
-          },
-          {
-            label: 'Unfollow',
-            onSelect: async () => {
-              await new DataService().unfollowUser(tweet.author.id);
-              Onyx.contextMenu.close();
-            },
-          },
-        ],
-      }}
-    />
-    <div class="text-container">
-      {@html tweet.htmlText}
-    </div>
+    >
+      <div class="text-container">
+        {@html tweet.htmlText}
+      </div>
+    </NavItem>
     {#if tweet.attachments?.poll}
       <PollViewer
         poll={tweet.attachments?.poll}
