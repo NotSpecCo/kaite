@@ -75,6 +75,7 @@ export function toTweet(source: TwitterTweet, entities: TwitterEntities): Tweet 
     },
     repliedToTweetId: source.referenced_tweets?.find((a) => a.type === 'replied_to')?.id,
     quotedTweetId: source.referenced_tweets?.find((a) => a.type === 'quoted')?.id,
+    retweetedTweetId: source.referenced_tweets?.find((a) => a.type === 'retweeted')?.id,
   };
 
   if (source.entities?.mentions) {

@@ -40,6 +40,7 @@ export type Tweet = {
   createdAt: string;
   repliedToTweetId?: string;
   quotedTweetId?: string;
+  retweetedTweetId?: string;
   nextTweetId?: string;
   prevTweetId?: string;
 };
