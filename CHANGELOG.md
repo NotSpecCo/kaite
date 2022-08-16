@@ -1,3 +1,19 @@
+# [1.7.0](https://github.com/garredow/kaite/compare/v1.6.0...v1.7.0) (2022-08-14)
+
+
+### Bug Fixes
+
+* **tweets:** fix display of polls with no votes ([643bbcd](https://github.com/garredow/kaite/commit/643bbcd3fda9d822d55e0b301eabc064a91fd2f3))
+
+
+### Features
+
+* add bookmarks view ([3fdcd5d](https://github.com/garredow/kaite/commit/3fdcd5d4c2f00d016f6a0b37805b524bea3406e5))
+* add standalone tweet viewer ([9826337](https://github.com/garredow/kaite/commit/982633760239a7e8c82e502609c4d5d6abcb0f17))
+* **timeline:** display number of tweets remaining ([ca26645](https://github.com/garredow/kaite/commit/ca266452f5a4f51aebc90452458134d26e7098c0))
+* **tweets:** display quoted tweets ([6c865a2](https://github.com/garredow/kaite/commit/6c865a240bfc683bea80f1e0d97fcc74434b671b))
+* **tweets:** move tweet actions from timeline long press to tweet content ([f2fba79](https://github.com/garredow/kaite/commit/f2fba79571fc2344780944dfb1f83f7cc5e4f995))
+
 # [1.6.0](https://github.com/garredow/kaite/compare/v1.5.0...v1.6.0) (2022-08-14)
 
 
