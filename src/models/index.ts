@@ -1,3 +1,4 @@
+export * from './NewTweet';
 export * from './Poll';
 export * from './Settings';
 export * from './Tokens';

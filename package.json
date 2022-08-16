@@ -48,7 +48,7 @@
     "date-fns": "^2.29.1",
     "dexie": "^3.2.2",
     "numeral": "^2.0.6",
-    "onyx-ui": "^0.11.0",
+    "onyx-ui": "^0.11.3",
     "sirv-cli": "^1.0.0",
     "svelte-icons": "^2.1.0",
     "svelte-spa-router": "^3.3.0"

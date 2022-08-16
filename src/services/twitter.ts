@@ -1,4 +1,4 @@
-import type { Tweet, TwitterPoll, TwitterTweet, TwitterUser, User } from '../models';
+import type { NewTweet, Tweet, TwitterPoll, TwitterTweet, TwitterUser, User } from '../models';
 import { AuthClient } from './authClient';
 import { toTweet, toUser } from './mapper';
 
@@ -244,9 +244,20 @@ export class Twitter {
       await AuthClient.httpDelete(url.toString());
     },
 
-    async compose(text: string): Promise<void> {
+    async compose(tweet: NewTweet): Promise<void> {
+      const body: any = {
+        text: tweet.text,
+        quote_tweet_id: tweet.quoteId,
+      };
+
+      if (tweet.replyId) {
+        body.reply = {
+          in_reply_to_tweet_id: tweet.replyId,
+        };
+      }
+
       const url = AuthClient.buildApiUrl(`/2/tweets`);
-      await AuthClient.httpPost(url.toString(), { text });
+      await AuthClient.httpPost(url.toString(), body);
     },
   };
 }

@@ -1,4 +1,4 @@
-import type { Tweet, User } from '../models';
+import type { NewTweet, Tweet, User } from '../models';
 import { AuthClient } from './authClient';
 import { Database } from './database';
 import { Twitter } from './twitter';
@@ -112,7 +112,7 @@ export class DataService {
     await this.twitter.tweets.removeBookmark(tweetId);
   }
 
-  public async composeTweet(text: string): Promise<void> {
-    await this.twitter.tweets.compose(text);
+  public async composeTweet(tweet: NewTweet): Promise<void> {
+    await this.twitter.tweets.compose(tweet);
   }
 }

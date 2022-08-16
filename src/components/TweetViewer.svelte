@@ -71,6 +71,20 @@
         title: 'Tweet',
         items: [
           {
+            label: 'Reply',
+            onSelect: async () => {
+              push(`/compose?replyId=${tweet.id}`);
+              Onyx.contextMenu.close();
+            },
+          },
+          {
+            label: 'Quote',
+            onSelect: async () => {
+              push(`/compose?quoteId=${tweet.id}`);
+              Onyx.contextMenu.close();
+            },
+          },
+          {
             label: 'Like',
             onSelect: async () => {
               await new DataService().likeTweet(tweet.id);

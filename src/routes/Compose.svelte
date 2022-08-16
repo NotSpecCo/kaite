@@ -4,13 +4,19 @@
   import CardContent from 'onyx-ui/components/card/CardContent.svelte';
   import CardHeader from 'onyx-ui/components/card/CardHeader.svelte';
   import TextArea from 'onyx-ui/components/form/TextArea.svelte';
+  import Typography from 'onyx-ui/components/Typography.svelte';
   import View from 'onyx-ui/components/view/View.svelte';
   import ViewContent from 'onyx-ui/components/view/ViewContent.svelte';
   import { Color, DataStatus } from 'onyx-ui/enums';
   import { Onyx } from 'onyx-ui/services';
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
+  import { querystring } from 'svelte-spa-router';
+  import InlineTweetLoader from '../components/InlineTweetLoader.svelte';
   import { DataService } from '../services/data';
+  import { parseQueryString } from '../utils';
+
+  const query = parseQueryString($querystring);
 
   let value: string = '';
   let working = false;
@@ -19,7 +25,11 @@
     console.log('sendTweet');
     working = true;
     await new DataService()
-      .composeTweet(value)
+      .composeTweet({
+        text: value,
+        replyId: query.replyId,
+        quoteId: query.quoteId,
+      })
       .then(() =>
         Onyx.toaster.show({
           type: 'success',
@@ -54,6 +64,11 @@
           {value}
           onChange={(val) => (value = val)}
         />
+        {#if query.quoteId}
+          <div class="quoted-tweet">
+            <InlineTweetLoader tweetId={query.quoteId} navi={{ itemId: 'quote' }} />
+          </div>
+        {/if}
         <Button
           title="Tweet"
           color={Color.Accent}
@@ -63,7 +78,18 @@
             onSelect: () => sendTweet(),
           }}
         />
+        {#if query.replyId}
+          <Typography type="titleSmall">Replying to:</Typography>
+          <InlineTweetLoader tweetId={query.replyId} navi={{ itemId: 'reply' }} />
+        {/if}
       </CardContent>
     </Card>
   </ViewContent>
 </View>
+
+<style>
+  .quoted-tweet {
+    border-left: 2px solid var(--accent-color);
+    margin: 15px 0 10px 10px;
+  }
+</style>
