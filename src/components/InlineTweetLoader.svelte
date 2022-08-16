@@ -9,6 +9,7 @@
   import { DataService } from '../services/data';
 
   export let tweetId: string;
+  export let isQuote = false;
   export let navi: Navigation;
   export let contextMenu: ContextMenu = null;
 
@@ -29,7 +30,7 @@
     <Typography>Loading...</Typography>
   {:then tweet}
     {#if tweet}
-      <div class="root">
+      <div class="root" class:quote={isQuote}>
         <div class="header">
           <img src={tweet.author.avatarUrl} alt="" class="avatar" />
           <div class="author-name">@{tweet.author.username}</div>
@@ -47,6 +48,12 @@
 <style>
   .root {
     padding: 5px;
+  }
+  .root.quote {
+    background: rgba(0, 0, 0, 0.05);
+    margin: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--divider-color);
   }
 
   .header {

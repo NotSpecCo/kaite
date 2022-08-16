@@ -11,12 +11,10 @@
   import { Onyx } from 'onyx-ui/services';
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
-  import { querystring } from 'svelte-spa-router';
+  import { querystring, replace } from 'svelte-spa-router';
   import InlineTweetLoader from '../components/InlineTweetLoader.svelte';
   import { DataService } from '../services/data';
   import { parseQueryString } from '../utils';
-
-  const query = parseQueryString($querystring);
 
   let value: string = '';
   let working = false;
@@ -30,12 +28,14 @@
         replyId: query.replyId,
         quoteId: query.quoteId,
       })
-      .then(() =>
+      .then(() => {
         Onyx.toaster.show({
           type: 'success',
           title: 'Tweet sent!',
-        })
-      )
+        });
+        replace('/compose');
+        value = '';
+      })
       .catch(() =>
         Onyx.toaster.show({
           type: 'error',
@@ -43,7 +43,6 @@
         })
       );
     working = false;
-    value = '';
   }
 
   registerView({});
@@ -51,6 +50,9 @@
   onMount(async () => {
     updateView({ dataStatus: DataStatus.Loaded });
   });
+
+  let query = parseQueryString($querystring);
+  $: query = parseQueryString($querystring);
 </script>
 
 <View>
@@ -65,9 +67,7 @@
           onChange={(val) => (value = val)}
         />
         {#if query.quoteId}
-          <div class="quoted-tweet">
-            <InlineTweetLoader tweetId={query.quoteId} navi={{ itemId: 'quote' }} />
-          </div>
+          <InlineTweetLoader tweetId={query.quoteId} isQuote={true} navi={{ itemId: 'quote' }} />
         {/if}
         <Button
           title="Tweet"
@@ -86,10 +86,3 @@
     </Card>
   </ViewContent>
 </View>
-
-<style>
-  .quoted-tweet {
-    border-left: 2px solid var(--accent-color);
-    margin: 15px 0 10px 10px;
-  }
-</style>
