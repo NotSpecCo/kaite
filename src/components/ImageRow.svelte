@@ -30,6 +30,7 @@
   .image {
     width: 75%;
     padding: 5px;
+    border-radius: 12px;
   }
   .image.small {
     width: 50%;
