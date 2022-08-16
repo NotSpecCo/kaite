@@ -1,3 +1,13 @@
+# [1.8.0](https://github.com/garredow/kaite/compare/v1.7.0...v1.8.0) (2022-08-16)
+
+
+### Features
+
+* add support for retweeted tweets ([2c24282](https://github.com/garredow/kaite/commit/2c2428209e245ed352b1cb9c62c8fd218512d545))
+* allow quoting and replying to tweets ([9202c9d](https://github.com/garredow/kaite/commit/9202c9d33474383ef632961c3af9a84faecc6205))
+* improve styling of quoted tweets ([7619627](https://github.com/garredow/kaite/commit/76196274bcc36f324018d6cdf278a83d46abf73f))
+* **tweets:** improve display of images ([c2288f5](https://github.com/garredow/kaite/commit/c2288f588101950e45c9ad446b3ce7828bd40a2d))
+
 # [1.7.0](https://github.com/garredow/kaite/compare/v1.6.0...v1.7.0) (2022-08-14)
 
 
