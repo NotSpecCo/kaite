@@ -8,17 +8,20 @@
   import AppSettings from './routes/AppSettings.svelte';
   import Compose from './routes/Compose.svelte';
   import Home from './routes/Home.svelte';
+  import ListFollowers from './routes/ListFollowers.svelte';
+  import ListMembers from './routes/ListMembers.svelte';
   import LogIn from './routes/LogIn.svelte';
   import LogOut from './routes/LogOut.svelte';
   import Oauth from './routes/Oauth.svelte';
-  import Profile from './routes/Profile.svelte';
   import Redirect from './routes/Redirect.svelte';
   import Timeline from './routes/Timeline.svelte';
   import UserBookmarks from './routes/UserBookmarks.svelte';
   import UserLikes from './routes/UserLikes.svelte';
+  import UserLists from './routes/UserLists.svelte';
   import UserMentions from './routes/UserMentions.svelte';
   import UserProfile from './routes/UserProfile.svelte';
   import UserTweets from './routes/UserTweets.svelte';
+  import ViewList from './routes/ViewList.svelte';
   import ViewTweet from './routes/ViewTweet.svelte';
   import { AuthClient } from './services/authClient';
   import { KaiAds } from './services/kaiAds';
@@ -34,12 +37,15 @@
     '/compose': Compose,
     '/timeline/:tweetId?': Timeline,
     '/tweet/:tweetId': ViewTweet,
-    '/profile': Profile,
     '/user/:userId': UserProfile,
     '/user/:userId/tweets/:tweetId?': UserTweets,
     '/user/:userId/mentions/:tweetId?': UserMentions,
     '/user/:userId/likes/:tweetId?': UserLikes,
     '/user/:userId/bookmarks/:tweetId?': UserBookmarks,
+    '/user/:userId/lists': UserLists,
+    '/list/:listId': ViewList,
+    '/list/:listId/members': ListMembers,
+    '/list/:listId/followers': ListFollowers,
     '/settings/:cardId?': AppSettings,
     '*': Redirect,
   };

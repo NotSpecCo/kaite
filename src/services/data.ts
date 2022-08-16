@@ -1,4 +1,4 @@
-import type { NewTweet, Tweet, User } from '../models';
+import type { List, NewTweet, Tweet, User } from '../models';
 import { AuthClient } from './authClient';
 import { Database } from './database';
 import { Twitter } from './twitter';
@@ -47,6 +47,17 @@ export class DataService {
 
   public async getUserBookmarks(id: string): Promise<Tweet[]> {
     const result = await this.twitter.users.getBookmarks(id);
+    return result;
+  }
+
+  public async getUserLists(id: string): Promise<List[]> {
+    let result = await this.database.getAllLists();
+
+    if (result.length === 0) {
+      result = await this.twitter.users.getLists(id);
+      await this.database.addLists(result);
+    }
+
     return result;
   }
 
@@ -114,5 +125,26 @@ export class DataService {
 
   public async composeTweet(tweet: NewTweet): Promise<void> {
     await this.twitter.tweets.compose(tweet);
+  }
+
+  // Lists
+
+  async getListById(id: string): Promise<List | null> {
+    let result = await this.database.getListById(id);
+
+    if (!result) {
+      result = await this.twitter.lists.getById(id);
+      await this.database.addList(result);
+    }
+
+    return result;
+  }
+
+  async getListFollowers(id: string): Promise<User[]> {
+    return this.twitter.lists.getFollowers(id);
+  }
+
+  async getListMembers(id: string): Promise<User[]> {
+    return this.twitter.lists.getMembers(id);
   }
 }

@@ -1,6 +1,8 @@
 import type {
+  List,
   Tokens,
   Tweet,
+  TwitterList,
   TwitterPoll,
   TwitterTokens,
   TwitterTweet,
@@ -144,5 +146,25 @@ export function toTokens(source: TwitterTokens): Tokens {
     accessToken: source.access_token,
     refreshToken: source.refresh_token,
     tokenExpiresAt: new Date(new Date().valueOf() + source.expires_in * 1000).toISOString(),
+  };
+}
+
+export function toList(source: TwitterList, entities: TwitterEntities): List {
+  const user = entities.users.find((a) => a.id === source.owner_id);
+
+  return {
+    id: source.id,
+    name: source.name,
+    description: source.description,
+    private: source.private,
+    createdAt: source.created_at,
+    followerCount: source.follower_count,
+    memberCount: source.member_count,
+    owner: {
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      avatarUrl: user.profile_image_url,
+    },
   };
 }

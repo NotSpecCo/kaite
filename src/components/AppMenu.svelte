@@ -40,6 +40,12 @@
           route: `/user/${user.id}/bookmarks`,
           icon: FaBookmark,
         },
+        {
+          id: 'lists',
+          text: 'Lists',
+          route: `/user/${user.id}/lists`,
+          icon: FaListUl,
+        },
         { id: 'settings', text: 'Settings', route: `/settings/display`, icon: IoIosSettings },
       ]
     : [{ id: 'login', text: 'Log In', route: '/login', icon: FaSignInAlt }];
@@ -74,7 +80,7 @@
       />
     {/each}
     <Divider title="My Stuff" />
-    {#each items.slice(2, 7) as item, i}
+    {#each items.slice(2, 8) as item, i}
       <ListItem
         icon={item.icon}
         imageSize={IconSize.Smallest}
@@ -94,14 +100,14 @@
       />
     {/each}
     <Divider title="System" />
-    {#each items.slice(7) as item, i}
+    {#each items.slice(8) as item, i}
       <ListItem
         icon={item.icon}
         imageSize={IconSize.Smallest}
         primaryText={item.text}
         navi={{
           itemId: item.id,
-          shortcutKey: getShortcutFromIndex(i + 7),
+          shortcutKey: getShortcutFromIndex(i + 8),
           onSelect: () => {
             Onyx.appMenu.close();
             if (window.location.hash.startsWith(`#${item.route}`)) {

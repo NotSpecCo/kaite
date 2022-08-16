@@ -1,6 +1,15 @@
-import type { NewTweet, Tweet, TwitterPoll, TwitterTweet, TwitterUser, User } from '../models';
+import type {
+  List,
+  NewTweet,
+  Tweet,
+  TwitterList,
+  TwitterPoll,
+  TwitterTweet,
+  TwitterUser,
+  User,
+} from '../models';
 import { AuthClient } from './authClient';
-import { toTweet, toUser } from './mapper';
+import { toList, toTweet, toUser } from './mapper';
 
 type ApiResponse<T> = {
   data: T;
@@ -34,6 +43,7 @@ export class Twitter {
         toUser(res.data)
       );
     },
+
     getById(id: string): Promise<User> {
       const url = AuthClient.buildApiUrl(`/2/users/${id}`);
       url.searchParams.append('user.fields', userFields);
@@ -42,6 +52,7 @@ export class Twitter {
         toUser(res.data)
       );
     },
+
     async getHomeTimeline(sinceId?: string): Promise<Tweet[]> {
       const url = AuthClient.buildApiUrl(
         `/2/users/${AuthClient.user.id}/timelines/reverse_chronological`
@@ -70,6 +81,7 @@ export class Twitter {
         ) ?? []
       );
     },
+
     async getTweets(userId: string, sinceId?: string): Promise<Tweet[]> {
       const url = AuthClient.buildApiUrl(`/2/users/${userId}/tweets`);
       url.searchParams.append('tweet.fields', tweetFields);
@@ -98,6 +110,7 @@ export class Twitter {
           )
         : [];
     },
+
     async getMentions(userId: string, sinceId?: string): Promise<Tweet[]> {
       const url = AuthClient.buildApiUrl(`/2/users/${userId}/mentions`);
       url.searchParams.append('tweet.fields', tweetFields);
@@ -126,6 +139,7 @@ export class Twitter {
           )
         : [];
     },
+
     async getLikes(userId: string, sinceId?: string): Promise<Tweet[]> {
       const url = AuthClient.buildApiUrl(`/2/users/${userId}/liked_tweets`);
       url.searchParams.append('tweet.fields', tweetFields);
@@ -154,6 +168,7 @@ export class Twitter {
           )
         : [];
     },
+
     async getBookmarks(userId: string, sinceId?: string): Promise<Tweet[]> {
       const url = AuthClient.buildApiUrl(`/2/users/${userId}/bookmarks`);
       url.searchParams.append('tweet.fields', tweetFields);
@@ -182,10 +197,38 @@ export class Twitter {
           )
         : [];
     },
+
+    async getLists(userId: string): Promise<List[]> {
+      const url = AuthClient.buildApiUrl(`/2/users/${userId}/owned_lists`);
+      url.searchParams.append('user.fields', userFields);
+      url.searchParams.append(
+        'list.fields',
+        'created_at,follower_count,member_count,private,description,owner_id'
+      );
+      url.searchParams.append('expansions', 'owner_id');
+      url.searchParams.append('max_results', '100');
+
+      const res = await AuthClient.httpGet<ApiResponse<TwitterList[]>>(url.toString());
+
+      return res.data
+        ? res.data.map((a) =>
+            toList(a, {
+              users: res.includes.users ?? [],
+              hashtags: [],
+              urls: [],
+              mentions: [],
+              media: [],
+              polls: [],
+            })
+          )
+        : [];
+    },
+
     async follow(userId: string): Promise<void> {
       const url = AuthClient.buildApiUrl(`/2/users/${AuthClient.user.id}/following`);
       await AuthClient.httpPost(url.toString(), { target_user_id: userId });
     },
+
     async unfollow(userId: string): Promise<void> {
       const url = AuthClient.buildApiUrl(`/2/users/${AuthClient.user.id}/following/${userId}`);
       await AuthClient.httpDelete(url.toString());
@@ -214,6 +257,7 @@ export class Twitter {
         polls: res.includes.polls ?? [],
       });
     },
+
     async like(tweetId: string): Promise<void> {
       const url = AuthClient.buildApiUrl(`/2/users/${AuthClient.user.id}/likes`);
       await AuthClient.httpPost(url.toString(), { tweet_id: tweetId });
@@ -258,6 +302,56 @@ export class Twitter {
 
       const url = AuthClient.buildApiUrl(`/2/tweets`);
       await AuthClient.httpPost(url.toString(), body);
+    },
+  };
+
+  lists = {
+    async getById(id: string): Promise<List | null> {
+      const url = AuthClient.buildApiUrl(`/2/lists/${id}`);
+      url.searchParams.append('user.fields', userFields);
+      url.searchParams.append(
+        'list.fields',
+        'created_at,follower_count,member_count,private,description,owner_id'
+      );
+      url.searchParams.append('expansions', 'owner_id');
+      url.searchParams.append('max_results', '100');
+
+      const res = await AuthClient.httpGet<ApiResponse<TwitterList>>(url.toString());
+
+      if (res.errors?.length > 0) return null;
+
+      return toList(res.data, {
+        hashtags: [],
+        urls: [],
+        mentions: [],
+        users: res.includes.users ?? [],
+        media: res.includes.media ?? [],
+        polls: res.includes.polls ?? [],
+      });
+    },
+
+    async getFollowers(id: string): Promise<User[]> {
+      const url = AuthClient.buildApiUrl(`/2/lists/${id}/followers`);
+      url.searchParams.append('user.fields', userFields);
+      url.searchParams.append('max_results', '100');
+
+      const res = await AuthClient.httpGet<ApiResponse<TwitterUser[]>>(url.toString());
+
+      if (res.errors?.length > 0) return null;
+
+      return res.data?.map((a) => toUser(a)) ?? [];
+    },
+
+    async getMembers(id: string): Promise<User[]> {
+      const url = AuthClient.buildApiUrl(`/2/lists/${id}/members`);
+      url.searchParams.append('user.fields', userFields);
+      url.searchParams.append('max_results', '100');
+
+      const res = await AuthClient.httpGet<ApiResponse<TwitterUser[]>>(url.toString());
+
+      if (res.errors?.length > 0) return null;
+
+      return res.data?.map((a) => toUser(a)) ?? [];
     },
   };
 }

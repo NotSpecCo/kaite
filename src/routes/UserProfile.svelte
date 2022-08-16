@@ -15,6 +15,7 @@
   import FaAt from 'svelte-icons/fa/FaAt.svelte';
   import FaBookmark from 'svelte-icons/fa/FaBookmark.svelte';
   import FaHeart from 'svelte-icons/fa/FaHeart.svelte';
+  import FaListUl from 'svelte-icons/fa/FaListUl.svelte';
   import FaRegComment from 'svelte-icons/fa/FaRegComment.svelte';
   import FaUserAlt from 'svelte-icons/fa/FaUserAlt.svelte';
   import FaUserFriends from 'svelte-icons/fa/FaUserFriends.svelte';
@@ -100,6 +101,17 @@
               navi={{
                 itemId: 'bookmarks',
                 onSelect: () => push(`/user/${params.userId}/bookmarks`),
+              }}
+            />
+          {/if}
+          {#if isMe}
+            <ListItem
+              icon={FaListUl}
+              imageSize={IconSize.Smallest}
+              primaryText={`Lists`}
+              navi={{
+                itemId: 'lists',
+                onSelect: () => push(`/user/${params.userId}/lists`),
               }}
             />
           {/if}
