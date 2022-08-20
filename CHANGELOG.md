@@ -1,3 +1,11 @@
+# [1.9.0](https://github.com/garredow/kaite/compare/v1.8.0...v1.9.0) (2022-08-20)
+
+
+### Features
+
+* add initial support for lists ([90e922c](https://github.com/garredow/kaite/commit/90e922c87a43d909064d73731e06501e8e326e04))
+* **compose:** add support for polls ([803a5fe](https://github.com/garredow/kaite/commit/803a5fee7545e14405f30b49ff40c9ca2ac1b456))
+
 # [1.8.0](https://github.com/garredow/kaite/compare/v1.7.0...v1.8.0) (2022-08-16)
 
 
