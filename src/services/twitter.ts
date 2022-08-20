@@ -3,6 +3,7 @@ import type {
   NewTweet,
   Tweet,
   TwitterList,
+  TwitterNewTweet,
   TwitterPoll,
   TwitterTweet,
   TwitterUser,
@@ -289,7 +290,7 @@ export class Twitter {
     },
 
     async compose(tweet: NewTweet): Promise<void> {
-      const body: any = {
+      const body: TwitterNewTweet = {
         text: tweet.text,
         quote_tweet_id: tweet.quoteId,
       };
@@ -297,6 +298,13 @@ export class Twitter {
       if (tweet.replyId) {
         body.reply = {
           in_reply_to_tweet_id: tweet.replyId,
+        };
+      }
+
+      if (tweet.poll) {
+        body.poll = {
+          options: tweet.poll.options,
+          duration_minutes: tweet.poll.duration,
         };
       }
 

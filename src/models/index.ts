@@ -5,6 +5,7 @@ export * from './Settings';
 export * from './Tokens';
 export * from './Tweet';
 export * from './TwitterList';
+export * from './TwitterNewTweet';
 export * from './TwitterPoll';
 export * from './TwitterTokens';
 export * from './TwitterTweet';
